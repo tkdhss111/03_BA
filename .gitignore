@@ -1,0 +1,11 @@
+archive/
+old/
+build/
+*.ltjruby
+lec.pdf
+lec-handout.pdf
+lecsol.pdf
+lecsol-handout.pdf
+quiz.pdf
+quizsol.pdf
+quizsol-handout.pdf
