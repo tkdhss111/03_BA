@@ -1,0 +1,695 @@
+\newcommand{\Release}{}
+\newcommand{\Slide}{}
+\newcommand{\PrintLecture}{1}
+\newcommand{\PrintSolution}{0}
+\input{header_class.tex}
+\input{../../tex/hss_lualatex.tex}
+\input{../../tex/hss_hyperref.tex}
+\input{../../tex/hss_beamer.tex}
+
+\setbeameroption{hide notes}
+%\setbeameroption{show notes}
+%\setbeameroption{show only notes}
+%\setbeameroption{show notes on second screen=right}
+
+\newcommand{\R}{$\mathbf{R}$}
+\newcommand{\RS}{$\mathbf{RStudio}$}
+\newcommand{\Excel}{$\mathbf{Excel}$}
+
+\begin{document}
+
+\maketitle
+
+\MyFrame{}{\tableofcontents}
+
+\section{はじめに}
+
+\MyFrame{\insertsection}
+{
+  統計解析は，10年ほど前までは，CやFortranなど，
+  取扱いに専門的知識を要する
+  プログラミング言語を用いて行われていました．
+  これを，高度なプログラミング知識がなくても
+  誰でも利用できる形にしたものが，統計解析環境\R です．
+  Pythonとともにデータサイエンスの世界では標準の
+  ソフトウェアツールとなっています．\\
+  \R を習得すれば，統計解析から業務効率化ツール
+  の作成までオールマイティーに，そのスキルを活用できます．
+  データ分析に携わる方は，
+  様々な市販のソフトウェアに手を出さなくても，
+  これ一本で十分です．\\
+  手を動かして自分でやってみることが\R 習得の近道です．
+  そのため，各スライドには，
+  必ず演習を載せてあります．
+}
+
+\section{統計解析環境 \R}
+
+\MyFrame{\insertsection}
+{
+  \R とは，ＡＴ＆Ｔベル研究所が開発した統計解析用の
+  プログラミング言語（Ｓ言語）を参考にして作られた
+  フリーのオープンソース言語（Ｒ言語）
+  を使用できる統計解析環境．\\[3mm]
+
+  \MyCols
+  {
+    \MyFig{0.5}{logo-r.eps}
+    \MyCap{The R environment}
+  }
+  {
+    \MyFig{0.5}{r-open.pdf}
+    \MyCap{Microsoft R Open}
+  }
+  \R により，現代統計学をほぼ網羅する広範な統計解析や
+  出版物品質のグラフ描画が容易に可能となる．
+  Microsoft社により開発・保守されている高速版の\R
+  （Microsoft R Open） も存在する．
+}
+
+\MyFrame{\R パッケージ}
+{
+  \R だけでも基本的な統計解析は可能だが，
+  ユーザーの利用目的に応じて開発された\R パッケージと呼ばれる
+  統計解析ライブラリをインストールすることで機能を拡張できる．\\
+  
+  \R パッケージは，C/C++，Fortran，Ｒ言語で記述されており，
+  当初は，欧米大学の統計学科の教員らが中心となり
+  開発・保守を行っていたが，
+  近年は民間を含む様々な分野で広く開発が進められている．
+  すでに，1,000を超える\R パッケージがウェブ上で公開されている．
+}
+
+\MyFrame{CRAN}
+{
+  CRAN（包括的Ｒ保存庫網）とは，\R の本体やパッケージ，
+  マニュアル類が無償公開されているウェブサイト．
+  ユーザーは，最寄りのミラーサイトからソフトウェア
+  をダウンロードする．\\[3mm]
+  %\R 関連のソフトウェアをダウンロードする際には，
+  %次の国内のサイトを利用する．
+
+  %$\rightarrow$ 統計数理研究所（\url{https://cran.ism.ac.jp}）
+  \MyFig{0.6}{cran.png}
+}
+
+\MyFrame{RjpWiki}
+{
+  日本語での\R の情報源としては，
+筑波大学の岡田氏のウェブサイト\blue{RjpWiki}が有名．
+  多くの有用な情報が掲載されており，質問もできる．\\
+
+  \MyFig{1.0}{rjpwiki}
+  \MyRef{RjpWiki}{http://www.okadajp.org/RWiki}
+}
+
+\MyFrame{統合開発環境 \RS}
+{
+  \RS とは，\R 用の統合開発環境（IDE）で，
+  ソースコードの編集，実行，ヘルプの表示，
+  パッケージの作成など，
+  プログラミングに必要な様々な便利な機能を持つ．
+  Pythonの開発もできる．
+  オープンソース版の\RS をrstudio.comからダウンロードできる． 
+  \MyFig{0.5}{rstudio}
+  \MyRef{rstudio.com}{https://rstudio.com}
+}
+
+\section{基本操作}
+
+\MyFrame{\insertsection~スカラの作成}
+{
+  \MyDefinition{手順}
+  {
+    オブジェクト名の後に，代入（付置）記号「\texttt{<-}」と値を入力する．
+  }
+  ・「\texttt{<-}」の代わりに「=」も使用できる （若干意味が異なる）．\\
+  ・オブジェクト名は，大文字と小文字は区別される．
+  \MyCols
+  {
+    \MyConsole
+    {
+      \MyCmd{x <- 1}\\
+      \MyCmd{kw.pv <- 3.1}
+    }
+  }
+  {
+    \MyConsole
+    {
+      \MyCmd{ls()} \MyCmt{オブジェクト名表示}\\
+      \MyCmd{rm(list=ls())} \MyCmt{全消去}
+    }
+  }
+
+  \MyExercise
+  {
+    「Alt~+~-」で代入記号（\texttt{<-}）を20回入力せよ．\\
+    オブジェクト名を表示，オブジェクトを削除せよ．
+  }
+}
+\note
+{
+  ・\texttt{ls()}で作成したオブジェクトの名前を表示できる．\\
+  ・\texttt{rm('x')}でオブジェクトxを削除できる． 
+  \texttt{rm(list=ls())}で全消去．\\
+  \R ではオブジェクト名称の大文字と小文字は区別される．
+  漢字名称も使用可能だが，通常はローマ字小文字で，
+  判別可能な略語を用い，ofの意味で「.」や「\_」
+  を利用し単語を結合すると分かりやすくなる．
+  【例】\texttt{lat.jp}（日本の緯度），\texttt{kw.pv}（PV発電量）
+}
+
+\MyFrame{\insertsection~ベクトルの作成}
+{
+  \MyColsThree
+  {
+    \MyDefinition{手順（方法1）}
+    {結合関数「\texttt{c}」を用いて作成}
+  }
+  {
+    \MyDefinition{手順（方法2）}
+    {等差数列作成記号「\texttt{:}」を用いて作成}
+  }
+  {
+    \MyDefinition{手順（方法3）}
+    {等差数列作成関数「\texttt{seq}」を用いて作成}
+  }
+  「\texttt{rep}」関数で同一値ベクトル作成も可能
+  \texttt{rep(NA, 3)} $\ra$ \texttt{NA NA NA}\\
+  「?関数名」をコンソールに入力するとヘルプが表示される．
+
+  \MyColsThree
+  {
+    \MyConsole
+    {
+      \MyCmd{v <- c(1,6,3)}\\ \relax [1] 1 6 3
+    }
+  }
+  {
+    \MyConsole
+    {
+      \MyCmd{v <- 1:3}\\ \relax[1] 1 2 3
+    }
+  }
+  {
+    \MyConsole
+    {
+      \MyCmd{v <- seq(1,6,2)}\\ \relax [1] 1 3 5
+    }
+  }
+}
+
+\MyFrame{\insertsection~ベクトルの作成}
+{
+  \MyExercise
+  {
+    次のベクトルを作成せよ．
+    $(3, 2, 1),(3, 6, 9),(4, 2, 0),(1.5, 2.5, 3.5),(1, 2, 3, 1, 2, 3)$
+  }
+}
+
+\MyFrame{\insertsection~行列の作成}
+{
+  \MyDefinition{手順}
+  {
+    行列作成関数「\texttt{matrix}」を用いて作成．
+    行数：\texttt{nrow}，列数：\texttt{ncol}
+  }
+  \MyConsole
+  {
+    \MyCmd{m <- matrix(1:4, nrow = 2, ncol = 2)}\\
+    \hfill (オプション byrow = T で行毎に値代入)\\
+    \MyCmd{m}\\
+    % ToDo: verbatim did not work even with fragile option
+    \relax
+    \hspace{3mm}[,1] [,2]\\ \relax
+        [1,]    1    3\\ \relax
+        [2,]    2    4
+  }
+}
+
+\MyFrame{\insertsection~行列の作成}
+{
+  \MyExercise
+  {
+    次の行列を作成せよ．
+    \vspace{-9mm}
+    \[
+      \hspace{40mm}
+      \begin{bmatrix}
+        -2 & 0 & 2\\
+         4 & 6 & 8 
+      \end{bmatrix}
+      , 
+      \begin{bmatrix}
+        NA & NA\\
+        NA & NA 
+      \end{bmatrix}
+    \]
+  }
+}
+
+\MyFrame{\insertsection~オブジェクトの画面表示}
+{
+  \MyDefinition{手順}
+  {
+    コンソールに表示させたいオブジェクト名を入力する．
+    または，ソースコード画面でオブジェクトを選択して
+    Ctrl＋Enterを押す．
+  }
+  \MyColsThree
+  {
+    \MyConsole
+    {
+      \MyCmd{v[3]}\\ \relax [1] 3
+    }
+  }
+  {
+    \MyConsole
+    {
+      \MyCmd{m[2, ]}\\ \relax [1] 2 4
+    }
+  }
+  {
+    \MyConsole
+    {
+      \MyCmd{(x <- c(1, 2))}\\ \relax [1] 1 2
+    }
+  }
+  【オブジェクト要素の\R 表記】\\
+   ~~ベクトルvの要素$i$： v[i]\\
+   ~~行列mの$i$行： \texttt{m[i, ]}，
+   $j$列： \texttt{m[, j]}，
+   要素$(i, j)$： \texttt{m[i, j]}
+}
+
+\MyFrame{\insertsection~オブジェクトの画面表示}
+{
+  \MyExercise
+  {
+    スカラ，ベクトル，行列の値を表示せよ．
+  }
+}
+
+\MyFrame{\insertsection~データフレームの作成}
+{
+  \MyDefinition{手順}
+  {
+    テーブル作成関数「data.frame」を用いて作成する．
+  }
+  \MyConsole
+  {
+    \MyCmd{d <- data.frame(name = c('panda', 'lion'),\\
+           \hfill age  = c(5, 7), male = c(T, F))}
+
+    \MyCmd{d}\\
+       ~~~name age  male\\
+     1 panda 5 TRUE\\
+     2 ~~~lion 7 FALSE\\
+  }
+}
+
+\MyFrame{\insertsection~データフレームの作成}
+{
+  \MyExercise
+  {
+    漢字，数値，論理値のカラムを持つ，
+    データフレームを作成せよ（内容自由）．
+  }
+}
+
+\MyFrame{\insertsection~データフレームの操作１}
+{
+  \MyDefinition{手順}
+  {
+    アクセスしたいコラム（列）やレコード（行）の
+    インデック番号を入力する.
+    負の番号を入れると，そのコラムが除かれる．
+  }
+  \MyColsThree
+  {
+    \MyConsole
+    {
+      \MyCmd{d[, 1]}\\ \relax
+      [1] "panda" "lion" 
+    }
+  }
+  {
+    \MyConsole
+    {
+      \MyCmd{d[, c(1, 3)]}\\ \relax
+      ~~name  male\\
+      1 panda  TRUE\\
+      2 ~~~lion FALSE
+    }
+  }
+  {
+    \MyConsole
+    {
+      \MyCmd{d[, -1]}\\ \relax
+      ~~age  male\\
+      1   5  TRUE\\
+      2   7 FALSE
+    }
+  }
+}
+
+\MyFrame{\insertsection~データフレームの操作１}
+{
+  \MyExercise
+  {
+    レコード（行）にもインデックス番号でアクセスし，
+    値の表示や代入を行え．
+  }
+}
+
+\MyFrame{\insertsection~データフレームの操作２}
+{
+  \MyDefinition{手順}
+  {
+    オブジェクト名のあとにアクセスしたいコラム（列）名
+    を＄で結びつける.
+    または，コラム（列）名をリテラルで囲み記入する．\\
+    データフレームdのカラム： d\$カラム名 or d[, 'カラム名']
+  }
+  \MyCols
+  {
+    \MyConsole
+    {
+      \MyCmd{ d\$age }\\ \relax
+      [1] 5 7
+    }
+  }
+  {
+    \MyConsole
+    {
+      \MyCmd{ d[, c('name', 'age')] }\\
+      ~~~name age\\
+        1 panda   5\\
+        2 ~~~lion   7
+    }
+  }
+}
+
+\MyFrame{\insertsection~データフレームの操作２}
+{
+  \MyExercise
+  {
+    レコード（行）にもインデックス番号でアクセスし，
+    値の表示や代入を行え．
+    カラム名，レコード名は
+    \texttt{rownames(d)}, \texttt{colnames(d)}でアクセス可能．
+  }
+}
+
+\MyFrame{\insertsection~データフレームの操作３}
+{
+  \MyDefinition{手順}
+  {
+    アクセスしたいコラム（列）やレコード（行）に論理値を入力する.
+    T（TRUE）の論理値箇所のデータが抽出される．
+  }
+  \MyCols
+  {
+    \MyConsole
+    {
+      \MyCmd{ d[, c(T, F, T)] }\\
+          ~~~name  male\\
+        1 panda  TRUE\\
+        2 ~~~lion FALSE
+    }
+  }
+  {
+    \MyConsole
+    {
+      \MyCmd{ d[d\$age > 6, ] }\\
+       ~~name age  male\\
+       2 ~~lion ~~7 FALSE
+    }
+  }
+}
+
+\MyFrame{\insertsection~データフレームの操作３}
+{
+  \MyExercise
+  {
+    レコード（行）に論理値ベクトルでアクセスし，
+    値の表示や代入を行え．
+  }
+}
+
+\section{演算}
+
+\MyFrame{\insertsection~四則}
+{
+  \MyDefinition{手順}
+  {
+    和「\texttt{+}」，
+    減「\texttt{-}」，
+    積「\texttt{*}」，
+    除「\texttt{/}」，
+    乗「\texttt{\ \^} 」，
+    剰余「\texttt{\%\%}」，
+    剰商「\texttt{\%/\%}」の算法記号を使って演算する．
+    要素ごとの演算となる．
+  }
+  この他，行列演算用の積「\texttt{\%*\%}」，
+  転置「\texttt{t()}」，
+  逆行列「\texttt{solve()}」などもある．
+  \MyColsThree
+  {
+    \MyConsole
+    {
+      \MyCmd{x <- 1:3; y <- 1:3}\\
+      \MyCmd{x + y}\\ \relax
+      [1] 2 4 6
+    }
+  }
+  {
+    \MyConsole
+    {
+      \MyCmd{x <- 1:3; y <- 1:3}\\
+      \MyCmd{x * y}\\ \relax
+      [1] 1 4 9
+    }
+  }
+  {
+    \MyConsole
+    {
+      \MyCmd{x <- 9; y <- 2}\\
+      \MyCmd{x \%/\% y}\\ \relax
+      [1] 4
+    }
+  }
+}
+
+\MyFrame{\insertsection~四則}
+{
+  \MyExercise
+  {
+    既出のすべての演算記号を使って計算せよ（内容自由）．
+  }
+}
+
+\MyFrame{\insertsection~組込関数}
+{
+  \MyDefinition{手順}
+  {
+    平均値「\texttt{mean}」，
+    中央値「\texttt{median}」，
+    最大「\texttt{max}」，
+    最小「\texttt{min}」\\
+    範囲「\texttt{range}」，
+    平方根「\texttt{sqrt}」，
+    絶対値「\texttt{abs}」，
+    丸め「\texttt{round}」など
+  }
+  \MyColsThree
+  {
+    \MyConsole
+    {
+      \MyCmd{x <- 1:3}\\
+      \MyCmd{mean(x)}\\ \relax
+      [1] 2
+    }
+  }
+  {
+    \MyConsole
+    {
+      \MyCmd{x <- 1:3}\\
+      \MyCmd{range(x)}\\ \relax
+      [1] 1 3
+    }
+  }
+  {
+    \MyConsole
+    {
+      \MyCmd{x <- 3.14}\\
+      \MyCmd{round(x, 1)}\\ \relax
+      [1] 3.1 
+    }
+  }
+}
+
+\MyFrame{\insertsection~組込関数}
+{
+  \MyExercise
+  {
+    既出のすべての組み込み関数を使って，計算せよ（内容自由）．
+    また，その他の関数，定数（\texttt{pi}）は，
+    どのようなものがあるかウェブで検索せよ．
+  }
+}
+
+\MyFrame{\insertsection~自作関数１}
+{
+  \MyDefinition{手順}
+  {
+    関数オブジェクト名 \texttt{<- function (引数１，引数２，...)} 関数式\\
+    の形式で関数を作成する．引数は値渡しとなる．
+  }
+  \MyConsole
+  {
+    \MyCmd{get.mbe <- function(yhat, y) mean(yhat - y)}\\
+    \MyCmd{mbe <- get.mbe(yhat \red{=} 1:3, y \red{=} 4:6)}\\\relax
+    [1] -3
+  }
+}
+
+\MyFrame{\insertsection~自作関数１}
+{
+  \MyExercise
+  {
+    RMSE（平均２乗誤差平方）を求める関数を作成せよ．
+    \vspace{-2mm}
+    \[
+      \mathrm{RMSE}=\sqrt{\frac{1}{N}\sum_{i=1}^{N}(\hat{y}_i-y_i)^2}
+    \]
+    cf. 平均：~\texttt{mean()}，平方根：~\texttt{sqrt()}
+  }
+}
+
+\MyFrame{\insertsection~自作関数2}
+{
+  \MyDefinition{手順}
+  {
+    複数行の関数を作成するときは，
+    関数のスコープを示す｛｝（中括弧）や
+    変数名を指定して出力する\texttt{return}関数を用いる．
+  }
+  \MyCols
+  {
+    \MyConsole
+    {
+      \MyCmd
+      {
+        f <- function(x) \{\\
+          ~~~~~y~<- 1 + x + x \^ \ 2\\
+          ~~~~~z~<- log(y)\\
+          ~~~~~return(z)\\
+          ~~~\}
+      }
+    }
+  }
+  {
+    \MyConsole
+    {
+      \MyCmd{f(2)}\\\relax
+      [1] 1.94591
+    }
+  }
+  最後のオブジェクトを返り値とする場合はreturnはなくても良い．
+}
+
+\MyFrame{\insertsection~}
+{
+  \MyExercise
+  {
+    複数行の関数を作成せよ．
+  }
+}
+
+\section{入出力}
+
+\MyFrame{\insertsection~テキストデータの出力}
+{
+  \MyDefinition{手順}
+  {
+    \texttt{write.csv}関数を使用して，オブジェクトデータを
+    ファイルにCSVファイル形式*で書き込む．
+    * CSV：カンマ区切
+  }
+  \MyConsole
+  {
+    \MyCmd{ d0 <- data.frame(name=c('panda','lion'),age=c(5,7)) }\\
+    \MyCmd{ write.csv(d0, file = 'd0.csv') }
+  }
+  \texttt{quote = F}オプションをつけると
+  出力ファイル内の文字列引用符「"」を削除できる．
+  \texttt{write.csv(d0, file = 'd0.csv', quote = F)}
+}
+
+\MyFrame{\insertsection~テキストデータの出力}
+{
+  \MyExercise
+  {
+    データフレームを作成しファイルに出力せよ．
+  }
+}
+
+\MyFrame{\insertsection~テキストデータの出力}
+{
+  \MyDefinition{手順}
+  {
+    \texttt{read.csv}関数を使用して，CSVファイルを読み込み
+    オブジェクトに格納する．
+  }
+  \MyConsole
+  {
+    \MyCmd{d1 <- read.csv(file = 'd0.csv')}\\
+    \MyCmd{str(d1)}
+  }
+  \texttt{stringsAsFactors = F}オプションを付加すると
+  文字列の自動因子化を抑制する．\\
+  \texttt{read.csv(file = 'd0.csv', stringsAsFactors = F)}
+}
+
+\MyFrame{\insertsection~テキストデータの出力}
+{
+  \MyExercise
+  {
+    CSVファイルを読み込み，オブジェクトに格納せよ．
+  }
+}
+
+\MyFrame{\insertsection~\Excel データの入力}
+{
+  \MyDefinition{手順}
+  {
+    excel.linkパッケージを利用し，\R とリンクさせる．\\
+    パッケージの利用コマンド： \texttt{library(excel.link)}
+  }
+  \MyConsole
+  {
+    \MyCmd{library(excel.link)}\\
+    \MyCmd{xl.workbook.open('test.xlsx')}\hfill \MyCmt{\Excel を開く}\\
+    \MyCmd{d <- data.frame(x=3:1, y=-1:1)}\\
+    \MyCmd{xl['Sheet1!A1'] <- d}\hfill \MyCmt{Sheet1のＡ１を起点としてデータを書き込み}\\
+    \MyCmd{xl['Sheet1!B2'] -> x}\hfill \MyCmt{Sheet1のＢ２からデータを読み込み}\\
+    \MyCmd{xl.workbook.save('test.xlsx')}\hfill \MyCmt{Excel を保存}
+  }
+  \vspace{-2mm}
+  \texttt{xlr}： 行名付き，
+  \texttt{xlc}：列名付き，
+  \texttt{xlrc}：行列名付き入出力
+}
+
+\MyFrame{\insertsection~テキストデータの出力}
+{
+  \MyExercise
+  {
+    パッケージのヘルプにあるサンプルコードを用いて\Excel を操作せよ．
+  }
+}
+
+\end{document}
