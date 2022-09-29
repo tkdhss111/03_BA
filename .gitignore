@@ -2,6 +2,8 @@ archive/
 old/
 build/
 *.ltjruby
+auto
+auto.exe
 lec.pdf
 lec-handout.pdf
 lecsol.pdf
