@@ -1,0 +1,234 @@
+---
+title: "回帰分析（単回帰モデル）"
+author: "東京国際大学 データサイエンス教育研究所 竹田 恒"
+date: "`r Sys.Date()`"
+output:
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+	echo = TRUE,
+	message = TRUE,
+	warning = TRUE
+)
+```
+
+---
+
+## データ
+
+```{r}
+x <- 1:30
+n <- length(x)
+b0 <- 20
+b1 <- 1.2
+set.seed(2)
+e <- rnorm(n, mean = 0, sd = 5)
+y <- b0 + b1 * x + e
+ybar <- mean(y)
+
+# Test data
+#x <- c(1, 2, 3, 4, 5)
+#y <- c(2, 2, 4, 3, 5)
+
+d <- data.frame(x, y)
+str(d)
+```
+
+#### 要約統計量
+
+```{r}
+summary(d)
+```
+
+```{r echo=TRUE}
+# カラーパレット
+# (https://www.rapidtables.com/web/color/RGB_Color.html)
+COL <- c(rgb(255,   0,   0,  255, max = 255), # 赤
+         rgb(  0,   0, 255,  255, max = 255), # 青
+         rgb(  0, 155,   0,  255, max = 255)) # 緑
+```
+
+#### 散布図
+
+```{r}
+matplot(x, y, pch = 1)
+grid()
+```
+
+## 1. 切片なし単回帰モデル（Model1）
+
+
+$$
+\begin{align}
+Y_i=&\beta x_i + \epsilon_i，
+\epsilon_i \sim \mathbb{N}(0, \sigma^2)\\
+&ここで，\\
+&Y_i： 目的変数（確率変数）\\
+&x_i： 説明変数（定数）※（参考）相関分析では確率変数\\
+&\epsilon_i：誤差項（確率変数）\\
+&\beta： 傾きを表す真の回帰係数（定数）\\
+&\sigma：誤差の標準偏差（定数）
+\end{align}
+$$
+
+#### 1.1 計算式による回帰係数の推定
+
+```{r}
+options(digits = 3)
+
+b <- sum(x * y) / sum(x * x)
+```
+
+回帰係数$\beta$の推定値$b$：
+$$
+b = `r b`
+$$
+
+#### 切片なし単回帰モデルのMultiple $R_0^2$（第2項の分母で平均値が引かれていない）  
+
+$$
+R_0^2 = \frac{\sum_i \hat{y_i}^2}{\sum_i y_i^2} = 1-\frac{\sum_i (y_i - \hat{y_i})^2}{\sum_i y_i^2}
+$$
+
+```{r}
+yhat <- b * x
+RSS = sum((y - yhat)^2)
+TSS = sum(y^2)
+R2 = 1 - RSS/TSS
+```
+
+$$
+R_0^2 = `r R2`
+$$
+観測値と推定値の相関係数の二乗値とは異なる値となる．
+
+```{r}
+cor(y, yhat)^2
+```
+
+#### 1.2 Rによる回帰係数の推定
+
+```{r}
+fit1 <- lm(y ~ x - 1, data = d)
+sum(yhat - fit1$fitted)
+summary(fit1)
+
+matplot(x, y, pch = 1)
+matlines(x, fit1$fitted, col = COL[1])
+grid()
+```
+
+
+## 2. 切片あり単回帰モデル（Model2）
+
+$$
+\begin{align}
+Y_i=&\beta_0 + \beta_1 x_i + \epsilon_i，
+\epsilon_i \sim \mathbb{N}(0, \sigma^2)\\
+&ここで，\\
+&Y_i： 目的変数（確率変数）\\
+&x_i： 説明変数（定数）\\
+&\epsilon_i：誤差項（確率変数）\\
+&\beta_0： 切片を表す真の回帰係数（定数）\\
+&\beta_1： 傾きを表す真の回帰係数（定数）\\
+&\sigma：誤差の標準偏差（定数）
+\end{align}
+$$
+
+#### 2.1 計算式による回帰係数の推定
+
+```{r}
+
+n <- nrow(d)
+xbar <- mean(x)
+ybar <- mean(y)
+b1 <- (sum(x * y) - n * xbar * ybar) / (sum(x * x) - n * xbar^2)
+b0 <- ybar - b1 * xbar
+```
+
+回帰係数$\beta_0, \beta_1$の推定値$b_0, b_1$：
+$$
+\begin{align}
+  b_0 &= `r b0`\\
+  b_1 &= `r b1`
+\end{align}
+$$
+
+#### 切片あり単回帰モデルのMultiple $R^2$（一般的な定義）
+
+$$
+R^2 = \frac{\sum_i(\hat{y_i}-\bar{y})^2}{\sum_i(y_i-\bar{y})^2} = 1-\frac{\sum_i (y_i - \hat{y_i})^2}{\sum_i (y_i-\bar{y})^2}
+$$
+
+```{r}
+yhat <- b0 + b1 * x
+RSS = sum((y - yhat)^2)
+TSS = sum((y - mean(y))^2)
+R2 = 1 - RSS/TSS
+```
+
+$$
+R^2 = `r R2`
+$$
+
+###### 観測値と推定値の相関係数の二乗値と同じ値となる．
+
+```{r}
+cor(y, yhat)^2
+```
+
+#### 2.2 Rによる回帰係数の推定
+
+```{r}
+fit2 <- lm(y ~ x, data = d)
+
+summary(fit2)
+
+matplot(x, y, pch = 1)
+matlines(x, fit2$fitted, col = COL[2])
+grid()
+```
+
+## 3 回帰モデルの比較（Model1 vs Model2）
+
+```{r message=FALSE}
+library(sjPlot)
+library(sjmisc)
+library(sjlabelled)
+tab_model(fit1, fit2, dv.labels = c("Model1", "Model2"))
+```
+
+【注意】決定係数Multiple $R^2$をみると，Model1の説明力がModel2より高くなっている．切片の有無により決定係数の計算方法が異なるため，この指標では切片の有無によるモデル性能の違いを評価できない． 
+[Removal of statistically significant intercept term increases R2
+in linear model](https://stats.stackexchange.com/questions/26176/removal-of-statistically-significant-intercept-term-increases-r2-in-linear-mo)
+
+
+単回帰のときは，決定係数のような平均値からの変動を評価する指標ではなくて残差標準誤差RSE（residual standard error）や平均二乗誤差平方RMSE(root-mean-square error)など残差から評価する指標を代わりに使おう．
+```{r message=FALSE}
+# RMSEは技術系で認知されている散布度の指標（データサイズｎで割る）
+(RMSE1 <- sqrt(mean((y - fit1$fitted)^2)))
+(RMSE2 <- sqrt(mean((y - fit2$fitted)^2)))
+
+# RSEは誤差の標準偏差（自由度d.f.で割る->不偏推定量）
+(RSE1 <- sqrt(sum(fit1$resid^2) / fit1$df.resid))
+(RSE2 <- sqrt(sum(fit2$resid^2) / fit2$df.resid))
+```
+
+```{r}
+matplot(x, y, pch = 1)
+grid()
+matlines(x, fit1$fitted, col = COL[1])
+matlines(x, fit2$fitted, col = COL[2])
+
+library(latex2exp)
+text(10, 20, adj = 0, TeX(sprintf("$RMSE_1 = %1.2f$", RMSE1)))
+text( 3, 35, adj = 0, TeX(sprintf("$RMSE_2 = %1.2f$", RMSE2)))
+
+legend("topleft", lty = 1, col = COL, 
+       legend = c(TeX("$Model_1 ( \\hat{Y} = \\hat{\\beta} x )$"),
+                  TeX("$Model_2 ( \\hat{Y} = \\hat{\\beta}_0 + \\hat{\\beta}_1 x )$")))
+```
+
+---

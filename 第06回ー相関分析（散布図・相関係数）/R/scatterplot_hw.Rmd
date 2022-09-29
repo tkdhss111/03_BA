@@ -1,0 +1,67 @@
+---
+title: "散布図"
+subtitle: "課題"
+author: '東京国際大学 データサイエンス教育研究所 竹田 恒'
+date: '2022-08-06'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+	echo = TRUE,
+	message = TRUE,
+	warning = TRUE
+)
+```
+
+---
+
+## データ
+```{r}
+# (1)
+x1 <- c(7, 4, 6, 2, 9, 3, 8, 1, 6, 3)
+y1 <- c(3, 6, 5, 8, 3, 4, 2, 9, 2, 6)
+
+# (2)
+x2 <- c(6, 3, 4, 9, 1, 8, 4, 2, 5, 7)
+y2 <- c(7, 8, 2, 1, 7, 9, 6, 3, 5, 4)
+```
+
+#### 要約統計量
+```{r}
+summary(data.frame(x1, y1, x2, y2))
+```
+
+```{r echo=TRUE}
+# カラーパレット
+# (https://www.rapidtables.com/web/color/RGB_Color.html)
+COL <- c(rgb(255,   0,   0,  105, max = 255), # 赤
+         rgb(  0,   0, 255,  105, max = 255), # 青
+         rgb(  0, 155,   0,  105, max = 255)) # 緑
+```
+
+---
+
+## 散布図
+```{r}
+
+# 枠
+matplot(x1, y1, type = 'n',
+        ylim = c(0, 10),
+        main = '主タイトル',
+        xlab = 'x軸ラベル［単位］',
+        ylab = 'y軸ラベル［単位］')
+
+# 罫線
+abline(lty = 2, col = gray(.5, .25), 
+       h = seq(0, 10, 2), v = seq(0, 10, 2))
+
+# プロット
+matpoints(x1, y1, pch = 16, col = COL[1])
+matpoints(x2, y2, pch = 16, col = COL[2])
+ 
+# 凡例
+legend('topright', pch = 16, col = COL[1:2],
+       legend = c('データ(1)', 'データ(2)'))
+
+```

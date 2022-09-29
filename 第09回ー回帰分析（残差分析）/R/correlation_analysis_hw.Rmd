@@ -1,0 +1,73 @@
+---
+title: '相関分析（課題）'
+author: '東京国際大学 データサイエンス教育研究所 竹田 恒'
+date: '2022-08-06'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+	echo = TRUE,
+	message = TRUE,
+	warning = TRUE
+)
+```
+
+---
+
+## データ（相関係数0.2の二次元正規乱数(n=150)を生成）
+```{r}
+library(MASS)
+set.seed(5)
+n <- 150 # サンプルサイズ
+rho <- 0.2
+d <- as.data.frame(
+  mvrnorm(n = n, mu = c(10, 5),
+          Sigma = rbind(c(1, rho),
+                        c(rho, 1))))
+colnames(d) <- c("u", "v")
+
+library(knitr)
+#kable(d)
+```
+
+#### 要約統計量
+```{r}
+summary(d)
+```
+
+```{r echo=FALSE}
+# カラーパレット（透過色）
+RGBS <- c(rgb(1, 0, 1, .8), # ピンク
+          rgb(0, 0, 1, .8), # ラベンダー
+          rgb(0, 1, 0, .8)) # グリーン
+GRAY <- rgb(.5, .5, .5, .25) # グレー
+```
+
+---
+
+## 相関分析
+
+#### 相関表
+```{r}
+kable(round(cor(d), 2), caption = 'Correlation Table')
+```
+
+#### 相関分析図
+```{r}
+library(psych)
+pairs.panels(d)
+cor.plot(d)
+```
+
+#### 無相関検定
+$$
+帰無仮説~\textit{H}_0: 母相関係数~\rho = 0\\
+対立仮説~\textit{H}_a: 母相関係数~\rho \ne 0\\
+検定統計量T は H_0 のもと自由度 n − 2 の t 分布に従う\\
+T=\frac{|r|\sqrt{n-2}}{\sqrt{1-r^2}}\sim t(n-2)\\
+ここで，r：標本相関係数，n：サンプルサイズ
+$$
+```{r}
+cor.test(d$u, d$v)
+```

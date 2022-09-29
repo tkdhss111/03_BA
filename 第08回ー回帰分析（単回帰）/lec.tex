@@ -1,0 +1,378 @@
+\newcommand{\Release}{}
+\newcommand{\Slide}{}
+\newcommand{\PrintLecture}{1}
+\newcommand{\PrintSolution}{1}
+\input{header_class.tex}
+\input{../../tex/hss_lualatex.tex}
+\input{../../tex/hss_hyperref.tex}
+\input{../../tex/hss_beamer.tex}
+
+\setbeameroption{hide notes}
+%\setbeameroption{show notes}
+%\setbeameroption{show only notes}
+%\setbeameroption{show notes on second screen=right}
+
+\begin{document}
+
+\maketitle
+
+\MyFrame{}{\tableofcontents}
+
+\note
+{
+  回帰分析は，今日最もよく使われている統計分析手法の一つ
+  相関分析，回帰分析について，
+  他の人に説明が出来るようになります．
+  また，回帰分析に欠かせない最小二乗法の仕組みを理解できます．
+}
+
+\section{相関分析と回帰分析の違い}
+
+\MyFrame{\insertsection}
+{
+  \MyTbl{lll}
+  {
+    分析名 & 変数 & 分析目的 \\
+    \midrule
+    回帰分析 & 目的変数:1, 説明変数:2～ & 説明変数$\ra$目的変数への影響\\
+    相関分析 & 1 対 1 & 変数間の関係性（双方向）
+  }
+  相関分析と回帰分析はとても似た分析であるが，
+  変数の種類や分析の目的がそれぞれ異なる．
+  変数間の関係性や影響の強さが確認されても，
+  変数間に因果関係があるとは限らない．
+}
+%因果関係
+%https://bodais-datascientist.blogspot.com/2017/04/blog-post_25.html
+
+\section{単回帰モデル}
+
+\subsection{切片なし単回帰モデル}
+
+\MyFrame{\insertsubsection}
+{
+  \[Y_i = \beta x_i + E_i, \quad E_i \sim \mathbb{N}(0, \sigma^2)\]
+  ここで，\\
+  \begin{itemize}
+    \item [$Y_i$] 目的変数（\MyFill{確率変数}）
+    \item [$x_i$] 説明変数（変数）
+    \item [$E_i$] 誤差項（\MyFill{確率変数}）
+    \item [$\beta$] 傾きを表す回帰係数（定数）
+    \item [$\sigma$] 誤差の標準偏差（定数）
+  \end{itemize}
+}
+
+\subsection{（切片あり）単回帰モデル}
+
+\MyFrame{\insertsubsection}
+{
+  \[Y_i = \beta_0 + \beta_1 x_i + E_i, \quad E_i \sim \mathbb{N}(0, \sigma^2)\]
+  ここで，\\
+  \begin{itemize}
+    \item [$Y_i$] 目的変数（\MyFill{確率変数}）
+    \item [$x_i$] 説明変数（変数）
+    \item [$E_i$] 誤差項（\MyFill{確率変数}）
+    \item [$\beta_0$] 切片を表す回帰係数（定数）
+    \item [$\beta_1$] 傾きを表す回帰係数（定数）
+    \item [$\sigma$] 誤差の標準偏差（定数）
+  \end{itemize}
+  \alert{単に単回帰モデルと言うときは切片ありのモデルになる．}
+}
+
+\subsection{用語の定義}
+
+\MyFrame{\insertsubsection}
+{
+  \MyDefinition{回帰係数の推定量}
+  {
+    $\beta$の推定量を$\hat{\beta}$で表す．
+    「beta hat」と読む．
+    $\hat{\beta}$は正規分布に従う確率変数であり，
+    $E[\hat{\beta}]=\beta$となる不偏推定量である．
+    $\hat{\beta}$の点推定値（実現値）を$b$で表す．
+  }
+  誤差項の$E_i$(epsilonの大文字)も正規分布に従う確率変数であり，
+  その実現値を$e_i$で表す．
+}
+
+\section{最小二乗法}
+
+\MyFrame{データの特徴を表す最も良い直線はどれか？}
+{
+  \begin{minipage}{0.3\textwidth}
+    \MyFig{1.0}{line01.png}
+  \end{minipage}
+  \begin{minipage}{0.3\textwidth}
+    \MyFig{1.0}{line02.png}
+  \end{minipage}
+  \begin{minipage}{0.3\textwidth}
+    \MyFig{1.0}{line03.png}
+  \end{minipage}
+  \begin{minipage}{0.3\textwidth}
+    \MyFig{1.0}{line04.png}
+  \end{minipage}
+  \begin{minipage}{0.3\textwidth}
+    \MyFig{1.0}{line05.png}
+  \end{minipage}
+  \begin{minipage}{0.3\textwidth}
+    \MyFig{1.0}{line06.png}
+  \end{minipage}
+}
+
+\MyFrame{}
+{
+  観測値$y_i$とモデル（データの特徴を表した関数）
+  による推定値$\hat{y}_i$との差を
+  \MyFill{残差}（residual）といい$e_i$で表す．\\
+  残差平方和$\sum_{i=1}^{10} e_i^2$
+  の値が小さい~\ra~データに良く当てはまる直線\\[3mm]
+  %
+  \begin{minipage}{0.3\textwidth}
+    \MyFig{1.0}{line_ss01.png}
+  \end{minipage}
+  \begin{minipage}{0.3\textwidth}
+    \MyFig{1.0}{line_ss02.png}
+  \end{minipage}
+  \begin{minipage}{0.3\textwidth}
+    \MyFig{1.0}{line_ss03.png}
+  \end{minipage}
+  \begin{minipage}{0.3\textwidth}
+    \MyFig{1.0}{line_ss04.png}
+  \end{minipage}
+  \begin{minipage}{0.3\textwidth}
+    \MyFig{1.0}{line_ss05.png}
+  \end{minipage}
+  \begin{minipage}{0.3\textwidth}
+    \MyFig{1.0}{line_ss06.png}
+  \end{minipage}
+}
+
+\MyFrame{計算で求まる最適な直線}
+{
+  \MyFig{0.8}{ls_line.png}
+}
+
+\MyFrame{}
+{
+  \MyDefinition{最小二乗法（最小自乗法）}
+  {
+    観測値$y_i$とモデル（関数）による推定値
+    $\hat{y}_i=f(x_i)$との差である
+    残差$e_i$の平方和（残差平方和; sum of squared errors）$SSE$
+    を最小にする関数の係数を求める方法を
+    \MyFill{最小二乗法}(LS; least squares method)という ．
+    \[
+      SSE=\sum_{i=1}^n e_i^2
+         =\sum_{i=1}^n\big\{y_i-\hat{y}_i\big\}^2
+    \]
+  }
+  \MyExample{切片\red{なし}の単回帰モデルの場合}
+  {
+    観測値$y_i$，推定値$\hat{y}_i=b x_i$
+    ，残差を$e_i$とすると，
+    \[
+      SSE=\sum_{i=1}^n e_i^2
+         =\sum_{i=1}^n\big\{y_i-\hat{y}_i\big\}^2
+         =\sum_{i=1}^n\big\{y_i-b x_i\big\}^2
+    \]
+    $SSE$を最小にする$b$を求める．
+  }
+}
+\note{note\\note outside of frame}
+
+\MyFrame{\insertsection}
+{
+  \MyExample{切片\red{あり}の単回帰モデルの場合}
+  {
+    観測値$y_i$，推定値$\hat{y}_i=b_0+b_1 x_i$
+    ，残差を$e_i$とすると，
+    \[
+      SSE=\sum_{i=1}^n e_i^2
+         =\sum_{i=1}^n\big\{y_i-\hat{y}_i\big\}^2
+         =\sum_{i=1}^n\big\{y_i-(b_0+b_1 x_i)\big\}^2
+    \]
+    $SSE$を最小にする$b_0,b_1$を求める．
+  }
+}
+
+\MyFrame{回帰係数の推定 （切片\red{なし}単回帰モデル）}
+{
+  切片なし単回帰モデル($Y_i=\beta x_i+E_i$)
+  の残差平方和$SSE(\B)$を$\B$で偏微分し，
+  $SSE(\B)$を最小にする$\B$を求める．
+  \small
+  \MyAlignFive
+  {&SSE(\B)=\sum_i E_i=\sum_i (Y_i-\hat{Y}_i)^2
+  =\sum_i (Y_i-\B x_i)^2=\sum_i (Y_i^2-2\B x_i Y_i+\B^2 x_i^2)}
+    {&正規方程式は，~\frac{\partial SSE(\B)}{\partial \B}=\sum_i (-2x_i Y_i + 2\B x_i^2)=0~となる．}
+  {&\Ra \qquad \sum_i(2\B x_i^2)=\sum_i(2x_i Y_i)}
+  {&\Ra \qquad 2\B \sum_i x_i^2=2\sum_i x_i Y_i}
+  {&\Ra \qquad \B =\frac{\sum_i x_i Y_i}{\sum_i x_i^2}\qquad（\beta の最小二乗推定量）}
+  cf. $b =\frac{\sum_i x_i y_i}{\sum_i x_i^2}$\quad（\beta の最小二乗推定値）
+}
+
+\MyFrame{回帰係数の推定 （切片\red{なし}単回帰モデル）}
+{
+  \MyProblem
+  {
+    \MyFig{0.7}{problem_slope_calc_data.png}
+    \MyFig{0.6}{problem_slope_calc_graph.png}
+  }
+}
+
+\MyFrame{回帰係数の推定 （切片\red{なし}単回帰モデル）}
+{
+  \MySolution
+  {
+    \MyFig{0.7}{solution_slope_calc_data.png}
+    \MyFig{0.6}{solution_slope_calc_graph.png}
+  }
+}
+
+\MyFrame{回帰係数の推定 （切片\red{あり}単回帰モデル）}
+{
+  切片あり単回帰モデル($Y_i=\beta_0 + \beta_1 x_i + E_i$)の残差平方和$SSE(\B_0, \B_1)$を
+  それぞれの変数に関してを偏微分し$SSE(\B_0, \B_1)$を
+  最小にする切片：$\B_0$，傾き：$\B_1$を求める．
+  %
+  \MyAlign
+  {
+    &\B_1
+    =\frac{\sum_i (Y_i-\bar{Y})(x_i-\bar{x})}{\sum_i (x_i-\bar{x})^2}
+    =\frac{\sum_i x_i Y_i-n\bar{x}\bar{Y}}{\sum_i x_i^2-n\bar{x}^2}\\
+    &\B_0=\bar{Y}-\B_1\bar{x}\\
+    &ここで，\bar{x}=\sum_i x_i/n,~\bar{Y}=\sum_i Y_i/n
+  }
+  cf.
+  \MyAlign
+  {
+    b_1&
+    =\frac{\sum_i (y_i-\bar{y})(x_i-\bar{x})}{\sum_i (x_i-\bar{x})^2}
+    =\frac{\sum_i x_i y_i-n\bar{x}\bar{y}}{\sum_i x_i^2-n\bar{x}^2}\\
+    b_0&=\bar{y}-b_1\bar{x}
+  }
+}
+
+\note{note\\note outside of frame}
+
+\MyFrame{回帰係数の推定 （切片\red{あり}単回帰モデル）}
+{
+  \MyProblem
+  {
+    \MyFig{0.7}{problem_slope_calc_data.png}
+    \MyFig{0.6}{problem_slope_calc_graph.png}
+  }
+}
+
+\MyFrame{回帰係数の推定 （切片\red{あり}単回帰モデル）}
+{
+  \MySolution
+  {
+    \MyFig{0.7}{solution_slope_calc_data.png}
+    \MyFig{0.6}{solution_slope_calc_graph2.png}
+  }
+}
+
+\MyFrame{}
+{
+  \MyProblem
+  {
+    \MyFig{0.7}{quiz/toukei_kentei2.png}
+  }
+}
+
+\MyFrame{}
+{
+  \MySolution
+  {
+    \MyFig{0.7}{quiz/toukei_kentei2_sol.png}
+  }
+}
+
+\MyFrame{最小二乗線を適用できる条件}
+{
+  \MyItems
+  {
+    \item 誤差項の分散$\sigma$が均一であること． 
+    \item 誤差間で相関が無いこと．
+    \item 誤差項と説明変数の間で相関が無いこと．
+  }
+  これらの条件については\MyFill{残差分析}(residual analysis)で詳細に学習する．
+}
+
+%\MyFrame{最小二乗線を適用できる条件}
+%{
+%  \MyItems
+%  {
+%    \item データに線形の傾向があること．
+%    \item 誤差がほぼ正規分布
+%    \item 誤差変動が一定
+%    \item 観測値が独立
+%  }
+%}
+%\note
+%{
+%線形性. データには線形トレンドが見られる.
+%非線形トレンドがあると,より高度な回帰分析を他の書物やコースで学ぶ方法が必要となる.
+%ほぼ正規分布の誤差.一般的に残差の分布は正規分布に近い必要がある.
+%この条件が適当ではないときには外れ値や影響のあるデータがあることが多いが, 図表 8.12 で示される残差について, 1 点が明らかに他の点を異なり直線から大きく外れている.
+%一定の変動性. 最小二乗線の周りの観測点の変動は大まかに一定となる . 変動が一定ではない例はこの条件を満たさないよくあるパターンとして,x が大きくなるにつれ y の変動が大きくなっている.独立な観察値. 時系列データ,
+%例えば毎日の株価などの時間と共に観察されるデータに回帰を適用するときは注意を要する.
+%時系列の場合にはモデルや分析においてデータの背後にある種の構造を考慮する必要があることが多い.
+%連続的な観測値は独立でない.
+%}
+%
+%\MyFrame{【確認問題】最小二乗線の適用可能性}
+%{
+%  次のデータに最小二乗線を適用すべきか？
+%  \MyFig{1.0}{問題_線形モデルを適用できるデータ.png}
+%  \OpenIntro
+%}
+%\note
+%{
+%  本章の条件が十分でないデータの例を示す.
+%  最初のパネルは線形性を満たさない.
+%  第二のパネルは外れ値があり 1 点のみ直線からかなり外れた値がある.
+%  第三のパネルは誤差の変動が x の値に関係している.
+%  第四のパネルは時系列データが示され連続する観測値が互いに高い相関がある.
+%}
+
+\section{回帰分析（単回帰モデル）　R演習}
+
+\MyFrame{\insertsection}
+{
+  RStudio Cloudで，
+  次のURLにあるソースコードを\red{タイプ}し回帰分析を行え．
+  \alert{コピペすると記憶に定着しないためＮＧ}
+  \url{https://rpubs.com/tkdhss111/SLR}
+}
+
+\MyFrame{\insertsection}
+{
+  次のb0（切片），b1（傾き）の値を変えて，
+  生成されるデータについて
+  Rで単回帰モデルの回帰係数を推定せよ．
+  \MyFig{0.5}{regression_analysis_hw_data.png}
+}
+
+\section{回帰分析（単回帰モデル）　R課題}
+
+\MyFrame{\insertsection}
+{
+  相関分析が終了したら，
+  RStudioの右上のアイコン
+  \includegraphics[width=8mm]{icon_publish.pdf}をクリックして，
+  RPubsの入力画面で次の内容を入力し，
+  www公開(publish)せよ．\\
+  \alert{www公開されるので個人名など機微な情報は入力しないこと．}
+  \begin{description}
+    \item[Username] tiu学籍番号　（例）tiu22110001\\
+    \item[Title] 回帰分析（単回帰モデル）\\
+    \item[Description] （空白／説明を入れてもよい）\\
+    \item[Slug] SLR
+  \end{description}
+  （職場で自分のソースコードとしてすぐに活用できるように，
+    自分なりの補足説明やコメントを入れておきましょう．）
+}
+
+\end{document}

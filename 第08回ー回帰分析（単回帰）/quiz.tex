@@ -1,0 +1,77 @@
+\newcommand{\Release}{}
+\newcommand{\Slide}{}
+\newcommand{\PrintLecture}{1}
+\newcommand{\PrintSolution}{1}
+\input{header_class.tex}
+\input{../../tex/hss_lualatex.tex}
+\input{../../tex/hss_moodle.tex}
+\input{../../tex/hss_beamer.tex}
+
+\begin{document}
+
+\maketitle
+
+\section{小テスト（\MyClass）}
+
+\begin{quiz}{\MyClass}
+
+\QuizShortAnswer
+{
+  観測値$y_i$とモデルによる推定値$\hat{y}_i$との差のことを
+  何というか？\\
+}
+{
+  観測値$y_i$とモデルによる推定値$\hat{y}_i$との差を
+  \MyFill{残差}（residual）といい$e_i$で表す．
+}
+{20}
+{残差}
+{residual}
+{}
+{}
+
+\QuizShortAnswer
+{
+  $\hat{\beta}$は$\beta$の推定量である．記号＾をなんと呼ぶか？
+}
+{
+  ハット
+}
+{20}
+{ハット}
+{はっと}
+{hat}
+{}
+
+\QuizShortAnswer
+{
+  残差平方和が最も小さい直線（赤色）が描かれている図はどれか？
+  番号を答えよ．
+  \includegraphics[width=0.9\textwidth]{quiz/residual.png}
+}
+{
+  4\\
+  $\sum e^2 = 53$
+}
+{20}
+{4}
+{}
+{}
+{}
+
+\QuizShortAnswer
+{
+  \includegraphics[width=0.9\textwidth]{quiz/toukei_kentei.png}
+}
+{
+  1
+}
+{40}
+{1}
+{}
+{}
+{}
+
+\end{quiz}
+
+\end{document}

@@ -1,0 +1,53 @@
+\newcommand{\Release}{}
+\newcommand{\Slide}{}
+\newcommand{\PrintLecture}{1}
+\newcommand{\PrintSolution}{1}
+\input{header_class.tex}
+\input{../../tex/hss_lualatex.tex}
+\input{../../tex/hss_moodle.tex}
+\input{../../tex/hss_beamer.tex}
+
+\begin{document}
+
+\section{小テスト（\MyClass）}
+
+\begin{quiz}{\MyClass}
+
+\QuizTrueFalse
+{「強い正または負の相関係数が得られたとしても，
+サンプルサイズが小さいときは信頼出来ない場合がある」は正しいか？}
+{正しい．無相関検定で有意でなければ相関について評価できない．}
+{30}
+{*正しい}
+{正しくない}
+
+\QuizMultipleChoices
+{無相関検定で有意とならなかった場合，誤っている表現はどれか？}
+{
+  今回のデータからは相関があるという証拠は見つからなかったということ．
+  統計的仮説検定では，積極的に無相関と言うことはできない．
+}
+{40}
+{相関があるとはいえない}
+{もう一度同じ母集団からデータをとって検定すれば相関があるといえるかもしれない．}
+{*無相関である}
+{有意な相関はない}
+
+\QuizShortAnswer
+{
+    二つの事象に因果関係が無いにも関わらず，
+    他の要因によってあたかも因果関係があるかのように見える
+    相関のことを\MyFill{　　　　}という．空欄を補充せよ．
+}
+{
+  擬似相関，または見せかけの相関という．
+}
+{30}
+{擬似相関}
+{見せかけの相関}
+{spurious correlation}
+{Spurious correlation}
+
+\end{quiz}
+
+\end{document}

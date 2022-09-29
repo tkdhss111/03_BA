@@ -1,0 +1,358 @@
+\newcommand{\Release}{}
+\newcommand{\Slide}{}
+\newcommand{\PrintLecture}{1}
+\newcommand{\PrintSolution}{1}
+\input{header_class.tex}
+\input{../../tex/hss_lualatex.tex}
+\input{../../tex/hss_hyperref.tex}
+\input{../../tex/hss_beamer.tex}
+
+\setbeameroption{hide notes}
+%\setbeameroption{show notes}
+%\setbeameroption{show only notes}
+%\setbeameroption{show notes on second screen=right}
+
+\begin{document}
+
+\maketitle
+
+\MyFrame{}{\tableofcontents}
+
+\note
+{
+  回帰分析は，今日最もよく使われている統計分析手法の一つ
+  相関分析，回帰分析について，
+  他の人に説明が出来るようになります．
+  また，回帰分析に欠かせない最小二乗法の仕組みを理解できます．
+}
+
+\section{散布図}
+
+\MyFrame{}
+{
+  \MyFig{1.0}{icecream/shirokumakun.png}
+}
+
+\MyFrame{}
+{
+  \MyFig{1.0}{icecream/data}
+}
+
+\MyFrame{レコードごとに，２つの変数の値を座標とする点をプロットする}
+{
+  点 $(x_i, y_i):=
+  \begin{cases}
+    x_i：レコードiの月平均気温（temp）\\
+    y_i：レコードiの金額（yen）
+  \end{cases}$
+  \MyFig{1.0}{icecream/data2scatter}
+}
+
+\MyFrame{}
+{
+  \MyDefinition{散布図}
+  {
+    異なる変数の値を座標の点で表したものを
+    \MyFill{散布図}(scatter plot)という．
+    二つの変数の関係性を分析する目的で作成された散布図は
+    \MyFill{相関図}(correlation diagram)とも呼ばれる．
+    ヒストグラム，箱ひげ図と並び，統計三大グラフの一つ
+  }
+  \MyFig{0.6}{icecream/scatter}
+}
+
+\MyFrame{散布図}
+{
+  \MyProblem
+  {
+    次のような２つの変数$x,y$からなるデータがある。
+    これらについて散布図を作成せよ。
+    \MyFig{0.9}{quiz/problem28.pdf}
+  }
+}
+
+\MyFrame{散布図}
+{
+  \MySolution
+  {
+    \MyFig{0.9}{quiz/problem28.pdf}
+    \MyFig{0.7}{quiz/solution28.pdf}
+  }
+}
+
+\MyFrame{散布図}
+{
+  \MyProblem
+  {
+    下の表は，１０人の生徒の身長と靴のサイズのデータである。
+    これらについて散布図を作成せよ。
+    \MyFig{0.7}{quiz/problem40.pdf}
+    \MyFig{0.4}{quiz/problem40graph.pdf}
+  }
+}
+
+\MyFrame{散布図}
+{
+  \MySolution
+  {
+    \MyFig{0.7}{quiz/problem40.pdf}
+    \MyFig{0.4}{quiz/solution40.pdf}
+  }
+}
+
+\MyFrame{散布図　R演習}
+{
+  RStudio Cloudで，
+  次のURLにあるソースコードを\red{タイプ}し散布図を作成せよ．
+  \alert{コピペすると記憶に定着しないためＮＧ}
+  \url{https://rpubs.com/tkdhss111/scatterplot}
+}
+
+\MyFrame{散布図　R演習}
+{
+  \MyFig{1.0}{fig/R_scatterplot.png}
+
+}
+
+\MyFrame{散布図　R課題}
+{
+  (1),(2)のデータについてRで散布図を作成せよ。
+  なお，１つの散布図に両データがプロットされたものとする．
+  \MyFig{0.9}{quiz/problem28.pdf}
+  \MyFig{0.4}{fig/scatterplot_hw_image.pdf}
+}
+
+\MyFrame{散布図　R課題}
+{
+  散布図が完成したら，
+  RStudioの右上のアイコン
+  \includegraphics[width=8mm]{icon_publish.pdf}をクリックして，
+  RPubsの入力画面で次の内容を入力し，
+  www公開(publish)せよ．\\
+  \alert{www公開されるので個人名など機微な情報は入力しないこと．}
+  \begin{description}
+    \item[Username] tiu学籍番号　（例）tiu22110001\\
+    \item[Title] 散布図\\
+    \item[Description] （空白／説明を入れてもよい）\\
+    \item[Slug] scatterplot
+  \end{description}
+  （職場で自分のソースコードとしてすぐに活用できるように，
+    自分なりの補足説明やコメントを入れておきましょう．）
+}
+
+\section{相関}
+
+\MyFrame{\insertsection}
+{
+  \MyDefinition{日本産業規格（JIS）による相関の定義}
+  {
+    二つの確率変数の分布法則の関係．\\
+    多くの場合，線形関係の程度を指す．
+  }
+  \MyFig{0.3}{correlation_jis_definition.pdf}
+}
+
+\MyFrame{\insertsection}
+{
+  \MyFig{0.6}{positive_correlation.pdf}
+  \MyCap{正の相関があるデータ}
+}
+\note
+{
+  片方が大きくなると，他方も大きくなる．
+}
+
+\MyFrame{\insertsection}
+{
+  \MyFig{0.6}{negative_correlation.pdf}
+  \MyCap{負の相関があるデータ}
+}
+\note
+{
+  片方が大きくなると，他方も逆に小さくなる．
+}
+
+\MyFrame{\insertsection}
+{
+  \MyFig{0.6}{curvilinear_correlation.pdf}
+  \MyCap{曲線的相関があるデータ}
+}
+
+\MyFrame{\insertsection}
+{
+  \MyFig{0.6}{no_correlation.pdf}
+  \MyCap{無相関なデータ}
+}
+
+\MyFrame{\insertsection}
+{
+  \MyProblem
+  {
+    データの特徴について述べよ．
+    \MyFig{0.9}{correlation_diagrams}
+  }
+}
+
+\MyFrame{\insertsection}
+{
+  \MySolution
+  {
+    \MyFig{0.9}{correlation_diagrams_words}
+    \uncover<2->
+    {
+      データの特徴を直線で表したときに，
+      その直線の傾きが正のとき\MyFill{正の相関}となる．
+      傾きが負の場合は，\MyFill{負の相関}となる．
+    }
+  }
+}
+
+\section{相関係数}
+
+\MyFrame{相関係数}
+{
+  【共分散】\\
+  第1象限のデータの$x\times y$を計算すると正の値になる．\\
+  第3象限のデータの$x\times y$を計算すると正の値になる．\\
+  $\Ra x,y$の共分散は正の値になる．
+  \MyFig{0.4}{positive_correlation.pdf}
+  \MyCap{正の相関があるデータ}
+}
+
+\MyFrame{相関係数}
+{
+  【共分散】\\
+  第2象限のデータの$x\times y$を計算すると負の値になる．\\
+  第4象限のデータの$x\times y$を計算すると負の値になる．\\
+  $\Ra x,y$の共分散は負の値になる．
+  \MyFig{0.4}{negative_correlation.pdf}
+  \MyCap{負の相関があるデータ}
+}
+
+\MyFrame{相関係数}
+{
+  共分散で相関の強さを評価しても良いか？\\
+  人間の体重・身長のデータから得られる共分散と，
+  象のそれらのデータから得られる共分散とでは大きさが全く異なる．\\
+  しかし，人間と象のそれぞれの体重・身長の相関の強さは
+  同じようなものかもしれない．
+  この他，アイスクリームの売上と気温の相関と，
+  同じく売上と湿度の相関が尺度（℃と％）が異なるものの
+  似た感じかもしれない．
+  尺度の違うデータであっても，
+  一律に相関の強さを評価するにはどうすればよいか？
+}
+
+\MyFrame{相関係数}
+{
+  \MyDefinition{相関係数}
+  {
+    二つの変数の共分散を，
+    それぞれの変数の標準偏差で割り，
+    －1～1の範囲に値が入るようにしたものを
+    \MyFill{相関係数}という．
+    \begin{align*}
+      r = \frac{xとyの共分散}{xの標準偏差\times yの標準偏差}
+    \end{align*}
+  }
+  共分散は尺度の違いにより$-\infty$〜$+\infty$の値となるが，
+  各変数それぞれの標準偏差で割ることで$-1$〜$+1$の値となり，
+  相関の強さを一律に評価できるようにしたもの．
+}
+
+\MyFrame{相関係数}
+{
+  \begin{align*}
+    r_{xy} = \frac{xとyの共分散}{xの標準偏差\times yの標準偏差}
+      =&\frac{\frac{1}{n}\sum_{i=1}^n(x_i-\bar{x})(y_i-\bar{y})}
+             {\sqrt{\frac{1}{n}\sum_{i=1}^n(x_i-\bar{x})^2}
+              \sqrt{\frac{1}{n}\sum_{i=1}^n(y_i-\bar{y})^2}}\\
+      =&\frac{\sum_{i=1}^n(x_i-\bar{x})(y_i-\bar{y})}
+             {\sqrt{\sum_{i=1}^n(x_i-\bar{x})^2}
+              \sqrt{\sum_{i=1}^n(y_i-\bar{y})^2}}
+  \end{align*}
+  ただし，$\bar{x}, \bar{y}$は，それぞれデータ$\{x_1,x_2,\dots,x_N\},
+  \{y_1,y_2,\dots,y_N\}$の平均値で，
+  $\bar{x}=\frac{1}{n}\sum_{i=1}^n x_i,
+   \bar{y}=\frac{1}{n}\sum_{i=1}^n y_i$である．
+}
+
+\MyFrame{相関係数による相関の強さの評価}
+{
+  \MyEnums
+  {
+    \item \MyFill{正の相関}が強いと相関係数が1に近づく
+    \item \MyFill{負の相関}が強いと相関係数が-1に近づく
+    \item 相関係数が1，または-1のときは\MyFill{完全相関}という
+    \item 相関係数が0の付近は\MyFill{無相関}という
+  }
+  相関係数の値が大きいからといって，因果関係があるとは限らない．\\
+  相関係数から分かるのは相関の強さだけである．
+}
+
+\MyFrame{相関係数による相関の強さの評価}
+{
+  \MyFig{0.9}{correlation_evaluation.pdf}
+  \MyRef
+  {【データのトリセツ】データ分析で「相関係数」を使うときの4つの注意点}
+  {https://techplay.jp/column/495}
+}
+
+\MyFrame{}
+{
+  \MyFig{1.0}{correlation_scatter.pdf}
+  \MyRef
+  {【ウィキペディア】相関係数}
+  {https://ja.wikipedia.org/wiki/相関係数}
+}
+
+\MyFrame{}
+{
+  \MyProblem
+  {
+    \MyFig{0.7}{quiz/problem53.pdf}
+  }
+}
+
+\MyFrame{}
+{
+  \MySolution
+  {
+    \MyFig{0.8}{quiz/solution53.pdf}
+  }
+}
+
+\section{相関係数の種類}
+
+\MyFrame{相関係数の種類}
+{
+  $\begin{cases}
+    ピアソンの積率相関係数（数値データ）
+    \uncover<2->{\blue{~\leftarrow 単に「相関係数」というとき}}\\
+    スピアマンの順位相関係数（順位データ）\\
+    ケンドールの順位相関係数（順位データ）
+  \end{cases}$\\[3mm]
+  順位相関係数は，データの分布を仮定しないノンパラメトリック手法.\\
+  スピアマンの順位相関係数の計算は，ピアソンの積率相関係数と同じだが，
+  数値データを順位データに置き換える．
+  ケンドールの順位相関係数の計算は，
+  データ同士でどちらが大きいか比較して点数付けする全く別の方法で行われる．
+  スピアマンとケンドールの使い分けはこれといってない．
+}
+\note
+{
+  ピアソンの対象とするデータが正規分布を仮定しているか疑問．
+  ケンドールの順位相関係数の計算は，
+  データのペアを比較し＋1，または－1の値を順位の代わりに利用する方法．
+}
+
+\MyFrame{順位相関係数を使用するデータ}
+{
+  \MyItems
+  {
+    \item 順位データのとき
+    \item 曲線的な相関のとき
+  }
+}
+
+\end{document}

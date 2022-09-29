@@ -1,0 +1,245 @@
+\newcommand{\Draft}{}
+\newcommand{\Slide}{}
+\newcommand{\PrintLecture}{1}
+\newcommand{\PrintSolution}{1}
+\input{header_class.tex}
+\input{../../tex/hss_lualatex.tex}
+\input{../../tex/hss_hyperref.tex}
+\input{../../tex/hss_beamer.tex}
+
+\setbeameroption{hide notes}
+%\setbeameroption{show notes}
+%\setbeameroption{show only notes}
+%\setbeameroption{show notes on second screen=right}
+
+\begin{document}
+
+\maketitle
+
+\MyFrame{}{\tableofcontents}
+
+\section{無相関検定}
+
+\MyFrame{無相関検定}
+{
+  \begin{itemize}
+    \item データサイズが小さい場合と大きい場合，
+      それぞれのときに計算された相関係数は，
+      どちらが信頼性が高いだろうか？
+    \item 4〜5個しかないデータで非常に高い相関係数が出た場合，
+      自信を持って強い相関があると言えるだろうか？
+    \item とても大きなデータサイズで0.2程度の
+      相関係数となった場合に，２変数は無相関と言えるだろうか？
+  \end{itemize}
+}
+
+\MyFrame{無相関検定}
+{
+  次の検定統計量$T$は\NH のもと自由度$n-2$の$t$分布に従う．\\
+  帰無仮説 \NH : 母相関係数$\rho=0$\\
+  対立仮説 \AH : 母相関係数$\rho\ne0$\\
+  \[T=\frac{|r|\sqrt{n-2}}{\sqrt{1-r^2}}\sim t(n-2)\]
+  ここで，$r$：標本相関係数，$n$：サンプルサイズ\\
+  帰無仮説\NH が棄却された場合は，「母相関係数は0でない」，
+  すなわち，「２つの変数間に相関がある」と結論付ける．
+  逆に，帰無仮説が棄却されなかった場合は，
+  与えられたデータからは「２つの変数間に相関がある」とは言えない．
+  \alert{積極的に無相関とは言わないこと！}
+}
+
+\MyFrame{無相関検定}
+{
+  \begin{itemize}
+    \item サンプルサイズが大きければ大きいほど，
+      相関係数により信頼がおける．
+    \item 高い相関係数が得られたとしても，
+      サンプルサイズが小さいときは要注意である．
+      無相関検定で有意とならない可能性がある． 
+    \item サンプルサイズがとても大きい社会調査などでは，
+  相関係数が0.2程度$^\dagger$
+  であっても無相関検定で有意であれば，弱い相関があると結論付ける．
+  \end{itemize}
+  $^\dagger$ 一般的には無相関と判断される水準
+}
+
+\MyFrame{無相関検定　R演習}
+{
+  RStudio Cloudで，
+  次のURLにあるソースコードを\red{タイプ}し無相関検定を行え．
+  \alert{コピペすると記憶に定着しないためＮＧ}
+  \url{https://rpubs.com/tkdhss111/correlation_analysis}
+}
+
+\MyFrame{}
+{
+  \MyFig{0.45}{correlation_analysis_data.png}
+}
+
+\MyFrame{}
+{
+  \MyFig{0.8}{correlation_analysis_table.png}
+}
+
+\MyFrame{}
+{
+  \MyFig{0.8}{correlation_analysis_graph.png}
+}
+
+\MyFrame{}
+{
+  \MyFig{0.8}{correlation_analysis_contour.png}
+}
+
+\MyFrame{無相関検定 R関数 \textbf{cor.test}}
+{
+  \footnotesize
+  cor.test(x, y, alternative = c("two.sided", "less", "greater"), method = c("pearson", "kendall", "spearman"), exact = NULL, conf.level = 0.95, continuity = FALSE, ...)
+  \MyFig{0.7}{fig/cor.test.pdf}
+}
+
+\MyFrame{}
+{
+  \MyFig{0.8}{correlation_analysis_test1.png}
+  両側検定の$p$値$<0.05$で，
+  有意水準5％で帰無仮説は棄却されるため，有意な相関がある．
+  相関係数は$-0.85$で強い負の相関がある．
+}
+
+\MyFrame{}
+{
+  \MyFig{0.8}{correlation_analysis_test2.png}
+  両側検定の$p$値$>0.05$で，
+  有意水準5％で帰無仮説は棄却されないため，有意な相関があるとはいえない．
+  相関係数は$0.10$となり無相関と判断される．
+}
+
+\MyFrame{}
+{
+  \MyFig{0.8}{correlation_analysis_test3.png}
+  両側検定の$p$値$>0.05$で，
+  有意水準5％で帰無仮説は棄却されないため，有意な相関があるとはいえない．
+  相関係数は$-0.42$となる．
+  (データサイズを大きくしたら有意な弱い負の相関が確認される可能性有り)\\
+  \pause
+  \alert{\ra~データサイズが小さいと相関の有無を判断できない場合が多い．}
+}
+
+\MyFrame{相関分析　R課題}
+{
+  次のコマンドで生成されるデータについてRで相関分析せよ。
+  また，サンプルサイズを$100$にした場合についても同様に分析せよ．
+  \MyFig{0.5}{correlation_analysis_hw_data.png}
+}
+
+\MyFrame{相関分析　R課題}
+{
+  相関分析が終了したら，
+  RStudioの右上のアイコン
+  \includegraphics[width=8mm]{icon_publish.pdf}をクリックして，
+  RPubsの入力画面で次の内容を入力し，
+  www公開(publish)せよ．\\
+  \alert{www公開されるので個人名など機微な情報は入力しないこと．}
+  \begin{description}
+    \item[Username] tiu学籍番号　（例）tiu22110001\\
+    \item[Title] 相関分析\\
+    \item[Description] （空白／説明を入れてもよい）\\
+    \item[Slug] correlation\_analysis
+  \end{description}
+  （職場で自分のソースコードとしてすぐに活用できるように，
+    自分なりの補足説明やコメントを入れておきましょう．）
+}
+
+\MyFrame{相関係数だけで変数間の関係性を判断することは危険}
+{
+  相関係数はとても小さくても強い関係性がある場合がある．
+  逆に，相関係数が1または－1に近い値であったとしても，
+  必ずしも2つの変数に関係性があるとは限らず，
+  「\MyFill{擬似相関}」という，互いに無関係な変数でも，
+  偶然に関係性があるかのような相関係数となることがある．
+
+  \MyItems
+  {
+    \item 必ず散布図（相関図）を作成して確認するとともに，
+    どのようにデータが生成された背景に注意して分析する必要がある．
+  }
+  \MyFig{0.35}{pitfall}
+}
+
+\MyFrame{相関係数だけで変数間の関係性を判断することは危険}
+{
+  相関係数の値は-0.2で，ほぼ無相関と判断しがちだが，これは早計である．
+  \MyFig{0.6}{pitfall_correlation}
+}
+
+\MyFrame{}
+{
+  \MyFig{1.0}{correlation_spurious1.pdf}
+}
+
+\MyFrame{}
+{
+  \MyFig{1.0}{correlation_spurious2.pdf}
+}
+
+\MyFrame{疑似相関（見せかけの相関）}
+{
+  \MyDefinition{擬似相関}
+  {
+    二つの事象に因果関係が無いにも関わらず，
+    他の要因によってあたかも因果関係があるかのように見える
+    相関のことを\MyFill{擬似相関}(spurious correlation)，
+    または\MyFill{見せかけの相関}という．
+  }
+
+  \MyDefinition{交絡因子}
+  {
+    擬似相関を発生させる背後に潜む第三の変数のことを
+    \MyFill{交絡因子}(confounding factor)という．
+  }
+  交絡因子を見つけるには，ドメイン知識が必要．
+  交絡因子が何か分かり，そのデータが得られるなら，
+  交絡因子の影響を取り除いた分析もできる．
+}
+
+\MyFrame{疑似相関の例}
+{
+  %\setbeamercovered{transparent}
+  \begin{itemize}%[<+- |alert@+>]
+    \item 警察官が増えると検挙数が増える \pause \ra~人口
+    \pause
+    \item 高血圧の人ほど年収が高い \pause \ra~年齢
+    \pause
+    \item アイスクリームが売れるほど、熱中症が増える\pause \ra~気温
+    \pause
+    \item 図書館が多い町ほど犯罪が多い\pause \ra~人口
+    \pause
+    \item ビールが売れるほど，水難事故が増える \pause \ra~季節
+    \pause
+    \item 年賀状を出す人ほど高収入 \pause \ra~年齢
+    \pause
+    \item 少子化が進むと，温暖化も進む\pause \ra~偶然にそうなった
+    \pause
+    \item 髪が長いほど言語能力の発達度合いが高い\pause \ra~性別
+    \pause
+    \item 小学校の算数の点数と身長の高さ\pause \ra~年齢
+  \end{itemize}
+  \vfill
+  \MyRef
+  {【ゼロから始める統計学】擬似相関の具体例10選}
+  {https://life-analyze24.com/gijisoukan-example}
+}
+
+\MyFrame{疑似相関}
+{
+  \centering
+%  \setbeamercolor{white-cyan2}{fg=white,bg=cyan!60!black}
+%  \begin{beamercolorbox}[wd=50mm, sep=2pt, center, shadow=true, rounded=true]{white-cyan2}\bfseries
+  \textbf{数字はウソをつかないが，ウソつきは数字を使う}\\[5mm]
+%  \end{beamercolorbox}
+  \pause
+  \alert{疑似相関を使って人をだます詐欺が多いので要注意!}\\
+  例）データから，うちの製品を多く導入した企業ほど業績が上がっていることが分かります．\\
+  \ra~単に世の中の景気が良くなっただけかもしれない．
+}
+
+\end{document}

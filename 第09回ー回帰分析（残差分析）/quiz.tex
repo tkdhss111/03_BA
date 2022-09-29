@@ -1,0 +1,143 @@
+\newcommand{\Release}{}
+\newcommand{\Slide}{}
+\newcommand{\PrintLecture}{1}
+\newcommand{\PrintSolution}{0}
+\input{header_class.tex}
+\input{../../tex/hss_lualatex.tex}
+\input{../../tex/hss_moodle.tex}
+\input{../../tex/hss_beamer.tex}
+
+\begin{document}
+
+\maketitle
+
+\section{小テスト（\MyClass）}
+
+\begin{quiz}{\MyClass}
+
+\QuizMultipleChoices
+{
+  回帰分析の前提条件はどれか？
+}
+{
+  \MyEnums
+  {
+    \item 等分散性（homoscedasticity; 誤差分散が一定）
+    \item 正規性（normality; 誤差が正規分布に従う）
+    \item 線形性（linearity; 説明変数と目的変数の関係は直線的）
+    \item 独立性（independence; 説明変数が互いに独立）
+  }
+  回帰モデルを分析目的でなく予測目的で用いる時は独立性の条件は不要。
+}
+{10}
+{*等分散性，正規性，線形性，独立性}
+{ 等分散性，正規性，線形性，排反性}
+{ 等分散性，標準性，線形性，独立性}
+{ 等分散性，標準性，線形性，排反性}
+
+\QuizMultipleChoices
+{
+   残差分析で，等分散性の確認に優れたグラフはどれか？
+}
+{
+  尺度-位置グラフ（scale-location plot）
+  \MyFig{0.45}{scale_location.png}
+}
+{20}
+{ 残差 VS 適合値グラフ（residuals vs fitted plot）}
+{*尺度-位置グラフ（scale-location plot）}
+{ 残差 VS \ruby{梃子比}{てこひ}グラフ（residuals vs leverage plot）}
+{ 正規Q-Qプロット（normal quantile-quantile plot）}
+
+\QuizMultipleChoices
+{
+   残差分析で，予測値に与える影響の大きいデータの確認に優れたグラフはどれか？
+}
+{
+  残差 VS \ruby{梃子比}{てこひ}グラフ（residuals vs leverage plot）
+  \MyFig{0.9}{residuals_vs_leverage.png}
+}
+{20}
+{ 残差 VS 適合値グラフ（residuals vs fitted plot）}
+{ 尺度-位置グラフ（scale-location plot）}
+{*残差 VS \ruby{梃子比}{てこひ}グラフ（residuals vs leverage plot）}
+{ 正規Q-Qプロット（normal quantile-quantile plot）}
+
+\QuizMultipleChoices
+{
+  \textbf{a}の分布のときの正規Q-Qプロットはどれか？
+  \includegraphics[width=0.45\textwidth]{quiz_qqplot_histogram.png}
+  \includegraphics[width=0.45\textwidth]{quiz_qqplot.png}
+}
+{
+  b
+}
+{10}
+{ a}
+{*b}
+{ c}
+{ d}
+
+\QuizMultipleChoices
+{
+  \textbf{b}の分布のときの正規Q-Qプロットはどれか？
+  \includegraphics[width=0.45\textwidth]{quiz_qqplot_histogram.png}
+  \includegraphics[width=0.45\textwidth]{quiz_qqplot.png}
+}
+{
+  a
+}
+{10}
+{*a}
+{ b}
+{ c}
+{ e}
+
+\QuizMultipleChoices
+{
+  \textbf{c}の分布のときの正規Q-Qプロットはどれか？
+  \includegraphics[width=0.45\textwidth]{quiz_qqplot_histogram.png}
+  \includegraphics[width=0.45\textwidth]{quiz_qqplot.png}
+}
+{
+  c
+}
+{10}
+{ a}
+{ b}
+{*c}
+{ d}
+
+\QuizMultipleChoices
+{
+  \textbf{d}の分布のときの正規Q-Qプロットはどれか？
+  \includegraphics[width=0.45\textwidth]{quiz_qqplot_histogram.png}
+  \includegraphics[width=0.45\textwidth]{quiz_qqplot.png}
+}
+{
+  d
+}
+{10}
+{ b}
+{ c}
+{*d}
+{ e}
+
+\QuizMultipleChoices
+{
+  \textbf{e}の分布のときの正規Q-Qプロットはどれか？
+  \includegraphics[width=0.45\textwidth]{quiz_qqplot_histogram.png}
+  \includegraphics[width=0.45\textwidth]{quiz_qqplot.png}
+}
+{
+  e
+}
+{10}
+{ b}
+{ c}
+{ d}
+{*e}
+
+\end{quiz}
+
+\end{document}

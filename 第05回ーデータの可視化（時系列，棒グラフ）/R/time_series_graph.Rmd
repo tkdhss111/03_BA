@@ -1,0 +1,83 @@
+---
+title: '時系列グラフ'
+author: '東京国際大学 データサイエンス教育研究所 竹田 恒'
+date: '2022-08-06'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+	echo = TRUE,
+	message = TRUE,
+	warning = TRUE
+)
+```
+
+---
+
+## データ
+```{r}
+set.seed(2)
+d <- data.frame(
+  u = rnorm(n = 10, mean =  0, sd = 1),
+  v = rnorm(n = 10, mean =  2, sd = 2),
+  w = rnorm(n = 10, mean = -2, sd = 3)) 
+
+# 時刻 (format > ?strptime）
+Sys.setlocale("LC_TIME", "ja_JP.UTF-8")
+rownames(d) <- ct <- seq(as.POSIXct("2022-08-11 12:00:00", tz = "Japan"), 
+                         as.POSIXct("2022-08-20 12:00:00", tz = "Japan"), 
+                         by = "days")
+
+nr <- nrow(d)
+nc <- ncol(d)
+
+library(knitr)
+kable(d)
+```
+
+#### 要約統計量
+
+```{r}
+summary(d)
+```
+
+```{r echo=TRUE}
+# カラーパレット
+# (https://www.rapidtables.com/web/color/RGB_Color.html)
+COL <- c(rgb(255,   0,   0,  255, max = 255), # 赤
+         rgb(  0,   0, 255,  255, max = 255), # 青
+         rgb(  0, 155,   0,  255, max = 255)) # 緑
+```
+
+---
+
+## 時系列グラフ
+```{r}
+# 枠 
+matplot(d, 
+        type = "n", xaxt = "n", # プロット，x軸を表示しない．
+        ylim = c(-12, 12),
+        main = '主タイトル',
+        xlab = '令和4（2022）年度',
+        ylab = '利益［万円］')
+
+# x軸
+at.x <- seq(1, nr, 2)
+axis(1, at = at.x, labels = format(ct, "%m/%d(%a)")[at.x])
+
+# 罫線
+abline(lty = 2, col = gray(.5, .25),
+       h = seq(-50, 50, 5),
+       v = at.x)
+
+# プロット
+matlines(d$u, type = "o", pch = 1, lty = 1, col = COL[1])
+matlines(d$v, type = "o", pch = 2, lty = 2, col = COL[2])
+matlines(d$w, type = "o", pch = 3, lty = 3, col = COL[3])
+
+# 凡例
+legend('topright', col = COL, pch = 1:nc, lty = 1:nc,
+       legend = c('U', 'V', 'W'))
+```
+

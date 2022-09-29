@@ -1,0 +1,93 @@
+---
+title: '散布図'
+author: '東京国際大学 データサイエンス教育研究所 竹田 恒'
+date: '2022-08-06'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+	echo = TRUE,
+	message = TRUE,
+	warning = TRUE
+)
+```
+
+---
+
+## データ
+```{r}
+x <- 1:100
+n <- length(x)
+d <- data.frame(
+  u = rnorm(n, mean =  0, sd = 1),
+  v = rnorm(n, mean =  2, sd = 2),
+  w = rnorm(n, mean = -2, sd = 3)) 
+
+str(d)
+```
+
+#### 要約統計量
+```{r}
+summary(d)
+```
+
+```{r echo=TRUE}
+# カラーパレット
+# (https://www.rapidtables.com/web/color/RGB_Color.html)
+COL <- c(rgb(255,   0,   0,  105, max = 255), # 赤
+         rgb(  0,   0, 255,  105, max = 255), # 青
+         rgb(  0, 155,   0,  105, max = 255)) # 緑
+```
+
+---
+
+## 散布図
+
+#### ３つの変数をまとめてプロットする場合（簡単に描画）
+```{r}
+# プロット
+matplot(x, d, type = 'p', pch = 16, col = COL,
+        main = '主タイトル',
+        xlab = 'x軸ラベル［単位］',
+        ylab = 'y軸ラベル［単位］')
+
+# 罫線
+grid()
+ 
+# 凡例
+legend('topleft', pch = 16, col = COL, 
+       legend = c('u', 'v', 'w'))
+
+```
+
+#### 個別にプロットする場合（細かな設定が可能）
+```{r}
+
+# 枠
+matplot(x, d$u, type = 'n', # 枠のサイズはデータuに設定，typeは"n"でプロットなし
+        ylim = c(-10, 10),
+        main = '主タイトル',
+        xlab = 'x軸ラベル［単位］',
+        ylab = 'y軸ラベル［単位］')
+
+# 罫線
+abline(lty = 2, col = gray(.5, .25), 
+       h = seq(-10, 10, 5),
+       v = seq(0, 100, 20))
+
+# プロット
+PCH <- 16:18
+matpoints(x, d$u, pch = PCH[1], col = COL[1])
+matpoints(x, d$v, pch = PCH[2], col = COL[2])
+matpoints(x, d$w, pch = PCH[3], col = COL[3])
+ 
+# 凡例
+legend('topright', pch = PCH, col = COL,
+       legend = c('u', 'v', 'w'))
+```
+
+#### 複数の変数ペアの散布図（一度に見たいときに便利）
+```{r}
+pairs(d, pch = 16, col = COL[1])
+```

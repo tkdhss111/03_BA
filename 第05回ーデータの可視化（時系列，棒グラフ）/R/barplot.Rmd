@@ -1,0 +1,88 @@
+---
+title: '棒グラフ'
+author: '東京国際大学 データサイエンス教育研究所 竹田 恒'
+date: '2022-08-06'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+	echo = TRUE,
+	message = TRUE,
+	warning = TRUE
+)
+```
+
+---
+
+## データ
+```{r}
+d <- data.frame(
+  イカ = c(10, 20, 30),
+  タコ = c(40, 80, 90),
+  マグロ = c(20, 50, 40))
+
+rownames(d) <- paste(1:nrow(d), "月")
+
+library(knitr)
+kable(d)
+```
+
+#### 要約統計量
+```{r}
+summary(d)
+```
+
+```{r echo=TRUE}
+# カラーパレット
+# (https://www.rapidtables.com/web/color/RGB_Color.html)
+COL <- c(rgb(255,   0, 255,  55, max = 255), # ピンク
+         rgb(  0,   0, 255,  55, max = 255), # ラベンダー
+         rgb(  0, 255,   0,  55, max = 255)) # ライトグリーン
+```
+
+---
+
+## 棒グラフ
+```{r}
+# プロット
+mon <- 1
+
+barplot(as.matrix(d[mon, ]), col = COL[2],
+        main = paste(mon, '月 売上数'),
+        xlab = '項目ラベル',
+        ylab = 'y軸ラベル［単位］')
+
+# 罫線
+abline(h = seq(0, 100, 5), lty = 2, col = gray(.5, .25))
+```
+
+## 積上棒グラフ
+```{r}
+# プロット
+barplot(as.matrix(d), col = COL,
+        main = '主タイトル',
+        xlab = '項目ラベル',
+        ylab = 'y軸ラベル［単位］')
+
+# 罫線
+abline(h = seq(0, 300, 50), lty = 2, col = gray(.5, .25))
+
+# 凡例
+legend("topleft", fill = COL, legend = colnames(d))
+```
+
+## 集合棒グラフ
+```{r}
+# プロット
+barplot(as.matrix(d), col = COL, beside = T,
+        main = '主タイトル',
+        xlab = '項目ラベル',
+        ylab = 'y軸ラベル［単位］')
+
+# 罫線
+abline(h = seq(0, 100, 20), lty = 2, col = gray(.5, .25))
+
+# 凡例
+legend("topleft", fill = COL, legend = colnames(d))
+```

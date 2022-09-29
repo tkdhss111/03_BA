@@ -1,0 +1,357 @@
+\newcommand{\Draft}{}
+\newcommand{\Slide}{}
+\newcommand{\PrintLecture}{1}
+\newcommand{\PrintSolution}{0}
+\input{header_class.tex}
+\input{../../tex/hss_lualatex.tex}
+\input{../../tex/hss_hyperref.tex}
+\input{../../tex/hss_beamer.tex}
+
+\setbeameroption{hide notes}
+%\setbeameroption{show notes}
+%\setbeameroption{show only notes}
+%\setbeameroption{show notes on second screen=right}
+
+\begin{document}
+
+\maketitle
+
+\MyFrame{}{\tableofcontents}
+
+\section{回帰分析の前提条件}
+
+\MyFrame{}
+{
+  \MyDefinition{回帰分析の前提条件}
+  {
+    \MyEnums
+    {
+      \item 等分散性（homoscedasticity; 誤差分散が一定）
+      \item 正規性（normality; 誤差が正規分布に従う）
+      \item 線形性（linearity; 説明変数と目的変数の関係は直線的）
+      \item 独立性（independence; 説明変数が互いに独立）
+    }
+  }
+  回帰モデルを分析目的でなく予測目的で用いる時は独立性の条件は不要。
+  %ToDo: 中野先生から教わった多重共線性の話を入れる。
+}
+
+\section{残差分析}
+
+\MyFrame{}
+{
+  \MyDefinition{残差分析}
+  {
+    等分散性，正規性，線形性の条件に加えて
+    外れ値（outlier）の確認をグラフを用いて行う分析を
+    \MyFill{残差分析}（residual analysis）という。
+    \MyEnums
+    {
+      \item 残差 VS 適合値グラフ（residuals vs fitted plot） 
+      \item 尺度-位置グラフ（scale-location plot） 
+      \item 残差 VS \ruby{梃子比}{てこひ}グラフ（residuals vs leverage plot） 
+      \item 正規Q-Qプロット（normal quantile-quantile plot） 
+    }
+  }
+  誤差分析といわず残差分析という理由は，
+  真の誤差は知ることができないので残差で代用するため。
+  独立性の確認は「多重共線性の確認」の章で説明する。
+}
+
+\section{残差 VS 適合値グラフ}
+
+\MyFrame{残差 VS 適合値グラフ（residuals vs fitted plot）}
+{
+  \MyEnums
+  {
+    \item 等分散性（homoscedasticity; 誤差分散が一定）\\
+      \ra~残差分布は$x$軸上で一定の広がりであることを確認する。
+    \item 線形性（linearity; 説明変数と目的変数の関係は直線的）\\
+      \ra~残差平均が0に近いことを確認する。（赤線が点線に近い）
+    \item 外れ値（outlier）\\
+      \ra~他と比べて極端に大きな残差がないことを確認する。
+  }
+  \MyFig{0.5}{residuals_vs_fitted.png}
+}
+
+\section{尺度-位置グラフ}
+
+\MyFrame{尺度-位置グラフ（scale-location plot）}
+{
+  残差 VS 適合値グラフとほぼ同じだが$y$軸が標準化残差の平方根となっている
+  点が異なる。すべて正の値のため，
+  等分散性は局所的な平均を表す赤線が水平になっていることで確認でき，
+  バラツキの幅の変化を目測する必要がある前者のグラフより分かり易い。
+  \MyEnums
+  {
+    \item 等分散性（homoscedasticity; 誤差分散が一定）\\
+      \ra~平均が一定であることを確認する。（赤線が水平)
+  }
+  \MyFig{0.5}{scale_location.png}
+}
+
+\section{残差 VS \ruby{梃子比}{てこひ}グラフ}
+
+%\MyFrame{残差 VS \ruby{梃子比}{てこひ}グラフ（residuals vs leverage plot）}
+\MyFrame{}
+{
+  %標準化残差（$e^*_i = e_i/MSE$）
+  \MyDefinition{\ruby{梃子比}{てこひ}}
+  {
+    説明変数の値を変えずに目的変数の値の一つを1だけ
+    増やし回帰モデルを学習させたときの
+    適合値（fitted value）の変化量（1以下の値）
+    を\MyFill{\ruby{梃子比}{てこひ}}（leverage）という。
+  }
+  %\begin{minipage}{0.45\textwidth}
+  \begin{columns}
+    \begin{column}{0.5\textwidth}
+      この値が大きいと回帰式や予測に大きな影響を与える。
+      説明変数の値がその中心（重心；centroid）から離れるにつれて，
+      この値（影響）は大きくなり，この様子が梃子の原理のようで
+      あるためこのように呼ばれる。
+    \end{column}
+    \begin{column}{0.5\textwidth}
+%  \end{minipage}
+%  \begin{minipage}{0.45\textwidth}
+    %https://www.i-juse.co.jp/statistics/member/gakusha06.html
+    %https://online.stat.psu.edu/stat462/node/171/
+  %  \centering
+    \MyFig{0.8}{leverage2.png}
+    \MyCap{梃子比は距離尺度}
+    \end{column}
+  %\end{minipage}
+  \end{columns}\mbox{}\\
+  \tiny
+  出典：
+  'Illustration of Leverage Values as Distance Measures',
+  \blue{Applied Liner Regression Models 4th Edition, p398.}
+}
+
+\MyFrame{}
+{
+  \MyDefinition{クックの距離}
+  {
+    $i$番目のデータが適合値（予測値）に与える影響を測定する距離尺度$D_i$を
+    \MyFill{クックの距離}（Cook's distance）という。
+    グラフにして外れ値確認に使用する。
+    \[
+      D_i = \frac{\sum_{j=1}^n(\hat{Y}_j-\hat{Y}_{j(i)})^2}{pMSE}
+    \]
+    \vspace{-20mm}
+    \MyItems
+    {
+      \item [$\hat{Y}_j$] $j$番目の適合値（fitted value）
+      \item [$\hat{Y}_{j(i)}$] $i$番目のデータを抜いてモデル適合したときの
+        $j$番目の適合値
+      \item [MSE] 平方誤差平均（mean squared errors）
+      \item [$p$] 切片を含む回帰係数の数
+    }
+  }
+  $i$番目除去時，適合値全体がどの程度変化するか測定する尺度
+}
+
+\MyFrame{残差 VS \ruby{梃子比}{てこひ}グラフ（residuals vs leverage plot）}
+{
+  クックの距離（$D_i$；破線）も併記させている。\\
+  $D_i > 0.5$ \ra ~影響力有り，
+  $D_i > 1.0$ \ra ~強い影響力有り
+  \MyFig{0.9}{residuals_vs_leverage.png}
+}
+
+\section{残差分析　R演習}
+
+\MyFrame{\insertsection}
+{
+  RStudio Cloudで，
+  次のURLにあるソースコードを\red{タイプ}し残差分析せよ。
+  外れ値の値をいろいろと変えて変化を確認せよ。
+  \url{https://rpubs.com/tkdhss111/residual_analysis}
+}
+
+\section{分位数を用いた分布の比較}
+
+\MyFrame{\insertsection}
+{
+  \MyFig{1.0}{qqplot_pre1.png}
+}
+
+\MyFrame{\insertsection}
+{
+  \MyFigsTwo{qqplot_pre_hist1.png}{qqplot_pre_hist2.png}
+}
+
+\MyFrame{\insertsection}
+{
+  \MyFig{0.7}{qqplot_pre_quantiles.png}
+}
+
+\MyFrame{}
+{
+  \MyFig{1.0}{qqplot_pre_qqplot.png}
+}
+
+\section{Q-Qプロット}
+
+\MyFrame{\insertsection}
+{
+  \MyDefinition{Q-Qプロット}
+  {
+    2つの分布形状を分位数を用いて比較するための散布図を
+    \MyFill{Q-Qプロット}（quantile-quantile plot）という。
+    類似していればプロットが直線状に並ぶので視覚的に分かり易い。
+  }
+  標準正規分布$\mathbb{N}(0, 1)$と比較した場合は特別に
+  \MyFill{正規Q-Qプロット}という。
+}
+
+\MyFrame{}
+{
+  \MyFig{0.8}{qqplot_data.png}
+}
+
+\MyFrame{}
+{
+  \MyFig{1.0}{qqplot_calc.png}
+}
+
+\MyFrame{}
+{
+  \MyFig{0.8}{qqplot_division.png}
+}
+
+\MyFrame{}
+{
+  \MyFig{1.0}{normal_qqplot_code.png}
+}
+
+\MyFrame{}
+{
+  \MyFig{1.0}{normal_qqplot.png}
+}
+
+\MyFrame{正規Q-Qプロット作成方法のまとめ}
+{
+  \MyEnums
+  {
+    \item 正規分布と比較したい標本（サイズ$n$）の$n$分位数を求める。
+          これは，単に観測値を小さい順に並べるだけである。
+          第$k$番目の$n$分位数を$x_k$とする。
+    \item 正規分布の$n$分位数を求める。
+          第$k$番目の$n$分位数までの累積確率$P_k$を
+          計算式$P_k=\frac{k-0.5}{n}$で求める。
+          そして，累積確率$P_k$となる分位数$z_k$を
+          分布関数から求める。
+    \item 正規分位数$z_k$（横軸）と標本分位数$x_k$（縦軸）
+          の散布図を作成する。
+  }
+  上記の計算式の他$P_k=\frac{k}{n+1}$もよく使われる。
+}
+
+\MyFrame{どちらが正規乱数のヒストグラムか？}
+{
+  \MyFigsTwo{hist1.png}{hist2.png}
+}
+
+\MyFrame{\R による作図}
+{
+  library(car)のqqPlot()関数でQQプロットを作成した例\\[3mm]
+
+  \MyFigsTwo{qqplot1.png}{qqplot2.png}
+}
+
+%\MyFrame{\insertsection の例}
+%{
+%  \MyFig{0.8}{qqplot_skewed.png}
+%}
+
+\MyFrame{\insertsection の例（正規分布と似た分布)}
+{
+  \MyFig{0.8}{qqplot_normal.png}
+  \MyRef
+  {Quantile-Quantile Plots}
+  {https://www.ucd.ie/ecomodel/Resources/QQplots_WebVersion.html}
+}
+
+\MyFrame{\insertsection の例（右歪みの分布)}
+{
+  \MyFig{0.8}{qqplot_right_skewed.png}
+  \MyRef
+  {Quantile-Quantile Plots}
+  {https://www.ucd.ie/ecomodel/Resources/QQplots_WebVersion.html}
+}
+
+\MyFrame{\insertsection の例（左歪みの分布)}
+{
+  \MyFig{0.8}{qqplot_left_skewed.png}
+  \MyRef
+  {Quantile-Quantile Plots}
+  {https://www.ucd.ie/ecomodel/Resources/QQplots_WebVersion.html}
+}
+
+\MyFrame{\insertsection の例（正規分布に対して裾野が狭い分布)}
+{
+  一様分布に近い分布の場合
+  \MyFig{0.8}{qqplot_under_dispersed.png}
+  \MyRef
+  {Quantile-Quantile Plots}
+  {https://www.ucd.ie/ecomodel/Resources/QQplots_WebVersion.html}
+}
+
+\MyFrame{\insertsection の例（正規分布に対して裾野が広い分布)}
+{
+  \MyFig{0.8}{qqplot_over_dispersed.png}
+  \MyRef
+  {Quantile-Quantile Plots}
+  {https://www.ucd.ie/ecomodel/Resources/QQplots_WebVersion.html}
+}
+
+\MyFrame{\insertsection~Tips}
+{
+  ヒストグラムでは階級の取り方により分布の比較が難しい場合がある。
+  そのときは，Q-Qプロットを利用する。
+  正規Q-Qプロットの直線からの外れ方から，
+  正規分布に対しての左右の歪の有無などが分かる。
+  \MyItems
+  {
+    \item 実務的には大体直線になっていれば多少外れていても良しとする
+    \item データクレンジングで異常値を除く
+    \item データの対数変換などで正規分布に近づくことも
+  }
+}
+
+\section{Q-Qプロット　R演習}
+
+\MyFrame{\insertsection}
+{
+  RStudio Cloudで，
+  次のURLにあるソースコードを\red{タイプ}しQ-Qプロットを作成せよ。
+  \alert{コピペすると記憶に定着しないためＮＧ}
+  \url{https://rpubs.com/tkdhss111/qqplot}
+}
+
+\section{Q-Qプロット　R課題}
+
+\MyFrame{\insertsection}
+{
+  Q-Qプロットの作成が終了したら，RStudioの右上のアイコン
+  \includegraphics[width=8mm]{icon_publish.pdf}をクリックして，
+  RPubsの入力画面で次の内容を入力し，www公開(publish)せよ．\\
+  \alert{www公開されるので個人名など機微な情報は入力しないこと．}
+  \begin{description}
+    \item[Username] tiu学籍番号　（例）tiu22110001\\
+    \item[Title] Q-Qプロット\\
+    \item[Description] （空白／説明を入れてもよい）\\
+    \item[Slug] qqplot
+  \end{description}
+  （職場で自分のソースコードとしてすぐに活用できるように，
+    自分なりの補足説明やコメントを入れておきましょう．）
+}
+
+\MyFrame{}
+{
+  誤差$E_i$は平均0，分散一定$\sigma$の正規分布に従う。
+  \[E_i \sim \mathbb{N}(0, \sigma^2)\]
+}
+
+\end{document}

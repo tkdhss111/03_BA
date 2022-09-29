@@ -1,0 +1,32 @@
+\newcommand{\Release}{}% Set Release or other word
+\newcommand{\Slide}{}% Rename other than 'Slide' to make A4
+\newcommand{\PrintLecture}{1}% Lecture On(1)/Off(0)
+\newcommand{\PrintSolution}{1}% Solution(Answer) On(1)/Off(0)
+\input{header_class.tex}
+\input{../../tex/hss_lualatex.tex}
+\input{../../tex/hss_moodle.tex}
+\input{../../tex/hss_beamer.tex}
+
+\begin{document}
+
+\section{小テスト（\MyClass）}
+
+\begin{quiz}{\MyClass}
+
+\QuizShortAnswer
+{
+  \includegraphics[width=0.6\textwidth]{quiz/problem53.png}\\
+  解答欄には相関係数の値を記入すること．
+}
+{
+  \includegraphics[width=0.6\textwidth]{quiz/solution53.png}
+}
+{100}
+{0.9}
+{}
+{}
+{}
+
+\end{quiz}
+
+\end{document}
