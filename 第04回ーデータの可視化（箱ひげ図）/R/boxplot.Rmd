@@ -1,0 +1,80 @@
+---
+title: '箱ひげ図'
+author: '東京国際大学 データサイエンス教育研究所 竹田 恒'
+date: '2022-08-06'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+	echo = TRUE,
+	message = TRUE,
+	warning = TRUE
+)
+```
+
+---
+
+## データ
+```{r}
+set.seed(2)
+d <- data.frame(
+  u = rnorm(n = 100, mean =  0, sd = 1),
+  v = rnorm(n = 100, mean =  2, sd = 2),
+  w = rnorm(n = 100, mean = -2, sd = 3)) 
+
+str(d)
+```
+
+#### 要約統計量
+```{r}
+summary(d)
+```
+
+```{r echo=TRUE}
+# カラーパレット
+# (https://www.rapidtables.com/web/color/RGB_Color.html)
+COL <- c(rgb(255,   0, 255,  55, max = 255), # ピンク
+         rgb(  0,   0, 255,  55, max = 255), # ラベンダー
+         rgb(  0, 255,   0,  55, max = 255)) # ライトグリーン
+```
+
+---
+
+## 箱ひげ図
+```{r}
+# プロット
+boxplot(d, col = COL,
+        ylim = c(-12, 12),
+        names = c("U", "V", "W"),
+        main = '主タイトル',
+        xlab = '項目ラベル',
+        ylab = 'y軸ラベル［単位］')
+
+# 罫線
+abline(h = seq(-50, 50, 5), lty = 2, col = gray(.5, .25))
+```
+
+## バイオリン図
+```{r include=FALSE}
+library(vioplot)
+```
+```{r}
+# プロット
+vioplot(d, col = COL, rectCol = "white",
+        plotCentre = "line",
+        ylim = c(-12, 12),
+        names = c("U", "V", "W"),
+        main = '主タイトル',
+        xlab = '項目ラベル',
+        ylab = 'y軸ラベル［単位］')
+
+# 平均値(+)
+points(apply(d, 2, mean), pch = 3)
+
+# 罫線
+abline(h = seq(-50, 50, 5), lty = 2, col = gray(.5, .25))
+
+# 凡例
+legend("topleft", pch = 3, legend = "平均値")
+```

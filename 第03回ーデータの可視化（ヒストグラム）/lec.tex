@@ -1,0 +1,368 @@
+\newcommand{\Release}{}
+\newcommand{\Slide}{}
+\newcommand{\PrintLecture}{1}
+\newcommand{\PrintSolution}{1}
+\input{header_class.tex}
+\input{../../tex/hss_lualatex.tex}
+\input{../../tex/hss_hyperref.tex}
+\input{../../tex/hss_beamer.tex}
+
+\setbeameroption{hide notes}
+%\setbeameroption{show notes}
+%\setbeameroption{show only notes}
+%\setbeameroption{show notes on second screen=right}
+
+\begin{document}
+
+\maketitle
+
+\MyFrame{}{\tableofcontents}
+
+\section{表データの名称}
+
+\MyFrame{表データの名称}
+{
+  \begin{description}[レコード(record/row)]
+    \item[テーブル(table)]データを表形式にまとめたもの
+    \item[カラム(column)]列方向のデータ
+    \item[レコード(record/row)]行方向のデータ
+    \item[フィールド(field)]データの要素（Excelではセルとよぶ）
+    \item[カラム名/項目名]表の一番上のカラムの内容を表記したもの
+  \end{description}
+  \MyFig{0.5}{table_names}
+  \MyRef
+  {データベースの用語を理解しよう 「テーブル」「レコード」「カラム」「フィールド」とは？}
+  {https://academy.gmocloud.com/know/20160425/2259}
+}
+
+\section{ヒストグラム}
+
+\MyFrame{}
+{
+  \MyDefinition{度数分布表}
+  {
+    データの値の範囲を小分けにした区間(bin)を
+    \MyFill{階級}(class)という．
+    各階級について，区間の真ん中の値を
+    \MyFill{階級値}(class value)，
+    含まれるデータの個数のことを
+    \MyFill{度数}(frequency/count)という．
+    度数分布表における\MyFill{最頻値}(mode)は，
+    最も度数の大きい階級値のことをいう．
+    階級と度数を表にしたものを
+    \MyFill{度数分布表}(FDT; frequency distribution table)という．
+    すべての階級の度数を合計するとデータサイズに一致する．
+  }
+  \MyDefinition{ヒストグラム}
+  {
+    度数分布表の階級を横軸に，度数を縦軸にとった棒グラフを
+    \MyFill{ヒストグラム}(histogram)/\MyFill{度数分布図}という．
+  }
+}
+
+\MyFrame{}
+{
+  \MyFig{1.0}{frequency_table.pdf}
+  \MyRef
+  {【統計学の基礎知識】度数分布やヒストグラムについて端的に解説 }
+  {https://korekara-marketing.com/statistics-frequency-distribution/}
+}
+
+\MyFrame{度数分布表からヒストグラムを作成}
+{
+  \MyFig{1.0}{freqtable2histogram.pdf}
+  \MyRef
+  {【統計学の基礎知識】度数分布やヒストグラムについて端的に解説 }
+  {https://korekara-marketing.com/statistics-frequency-distribution/}
+}
+
+\MyFrame{ヒストグラム（複数グループ）}
+{
+  \MyFig{1.0}{histogram_three}
+}
+
+\MyFrame{ヒストグラムの階級幅}
+{
+  データサイズから最適な階級幅を推定する方法が複数考案されている．
+  しかし，最適な幅はデータの分布形状に強く依存するため，
+  通常，データの分布の特徴が最も良く現れるように，
+  試行錯誤で階級幅を変えることが必要である．
+}
+
+\MyFrame{}
+{
+  \MyFig{1.0}{histogram_bin_choices.pdf}
+  \MyRef
+  {【ウェイキペディア】ヒストグラム}
+  {https://ja.wikipedia.org/wiki/ヒストグラム}
+}
+
+\MyFrame{ヒストグラムの形状}
+{
+  \MyFig{0.9}{histgram_pattern.pdf}
+  \MyRef
+  {【なるほど統計学園】ヒストグラムの形状}
+  {https://www.stat.go.jp/naruhodo/4_graph/shokyu/histogram.html}
+}
+\note
+{
+  ヒストグラムはデータの分布をみるのに有効なグラフです．
+  データの分布をヒストグラムで表すことによって，
+  そのデータの集合の特徴を把握することができます．
+}
+
+\MyFrame{分布形状を表現する用語}
+{
+  【ピーク】
+  \MyItems
+  {
+   \item 単峰性(unimodal)／釣鐘状(bell-shaped)・・・山が一つ
+   \item 双峰性(bimodal)・・・山が二つ
+   \item 多峰性(multimodal)・・・山が三つ以上
+   \item 一様(uniform)・・・山になっていなくて台地，フラット
+   \item ランダム(random)・・・凸凹無秩序
+  }
+}
+
+\MyFrame{分布形状を表現する用語}
+{
+【左右への歪み】
+  \MyItems
+  {
+   \item 右歪(skewed right)／正歪(positively skewed)\\
+     ・・・山の右側の裾野が広い
+   \item 左歪(skewed left)／負歪(negatively skewed)\\
+     ・・・山の左側の裾野が広い
+   \item 左右対称(symmetric)・・・山の左右が同じ
+  }
+}
+
+\MyFrame{分布形状を表現する用語}
+{
+【広がり】
+  \MyItems
+  {
+   \item 裾野の広い／幅広の(wide spread)・・・なだらかな山
+   \item 尖った／狭い(narrow spread)・・・ 急峻な山
+  }
+  \begin{itembox}{使用例}
+    このデータは幅広の単峰性の左右対称の分布を持つ．\\
+    このデータは尖った単峰性のやや右歪みのある分布を持つ．\\
+    このデータは一様な分布を持つ．
+  \end{itembox}
+}
+
+\MyFrame{分布形状を表現する用語}
+{
+  \MyProblem
+  {
+    次の分布の特徴を適切に文書で記せ．
+    \MyFig{0.9}{problem_histogram_types.png}
+  }
+}
+
+\MyFrame{分布形状を表現する用語}
+{
+  \MySolution
+  {
+    （省略）
+  }
+}
+
+\section{ヒストグラム 問題演習}
+
+\MyFrame{\insertsection}
+{
+  \MyProblem
+  {
+    \MyFig{1.0}{quiz/problem21.pdf}
+  }
+  \vspace{40mm}
+}
+
+\MyFrame{\insertsection}
+{
+  \MySolution
+  {
+    \MyFig{0.8}{quiz/solution21.pdf}
+  }
+}
+
+\MyFrame{\insertsection}
+{
+  \MyProblem
+  {
+    \MyFig{0.9}{quiz/problem37.pdf}
+    \MyFig{0.7}{quiz/problem37graph.pdf}
+  }
+  \vspace{40mm}
+}
+
+\MyFrame{\insertsection}
+{
+  \MySolution
+  {
+    \MyFig{0.8}{quiz/solution37.pdf}
+  }
+}
+
+\MyFrame{\insertsection}
+{
+  \MyProblem
+  {
+    \MyFig{0.8}{quiz/problem46.pdf}
+  }
+  \vspace{40mm}
+}
+
+\MyFrame{\insertsection}
+{
+  \MySolution
+  {
+    \MyFig{0.8}{quiz/solution46.pdf}
+  }
+}
+
+\MyFrame{\insertsection}
+{
+  \MyProblem
+  {
+    \MyFig{0.8}{quiz/problem45.pdf}
+  }
+  \vspace{40mm}
+}
+
+\MyFrame{\insertsection}
+{
+  \MySolution
+  {
+    \MyFig{0.8}{quiz/solution45.pdf}
+  }
+}
+
+\MyFrame{\insertsection}
+{
+  \MyProblem
+  {
+    \MyFig{0.9}{quiz/problem26.pdf}
+    \MyFig{0.9}{quiz/problem26graph.pdf}
+  }
+  \vspace{40mm}
+}
+
+\MyFrame{\insertsection}
+{
+  \MySolution
+  {
+    \MyFig{0.9}{quiz/solution26.pdf}
+  }
+}
+
+\MyFrame{\insertsection}
+{
+  \MyProblem
+  {
+    \MyFig{0.9}{quiz/problem22.pdf}
+    \MyFig{0.9}{quiz/problem22graph.pdf}
+  }
+  \vspace{40mm}
+}
+
+\MyFrame{\insertsection}
+{
+  \MySolution
+  {
+    \MyFig{0.9}{quiz/solution22.pdf}
+  }
+}
+
+\MyFrame{\insertsection}
+{
+  \MyProblem
+  {
+    \MyFig{1.0}{quiz/problem30.pdf}
+  }
+  \vspace{40mm}
+}
+
+\MyFrame{\insertsection}
+{
+  \MySolution
+  {
+    \MyFig{0.6}{quiz/solution30.pdf}
+  }
+}
+
+\section{ヒストグラム　R演習}
+
+\MyFrame{\insertsection}
+{
+  RStudio Cloudで，
+  次のURLにあるソースコードを\red{タイプ}しヒストグラムを作成せよ．
+  \alert{コピペすると記憶に定着しないためＮＧ}
+  \url{https://rpubs.com/tkdhss111/histogram}
+}
+
+\MyFrame{}
+{
+  \MyFig{0.9}{fig/histogram_data.png}
+
+}
+
+\MyFrame{R カラーパレット}
+{
+  \MyFig{0.8}{R_color_palette.png}
+  \MyFig{0.7}{RGB.png}
+  \MyRef{【ウィキペディア】RGB}{https://ja.wikipedia.org/wiki/RGB}
+}
+
+\MyFrame{}
+{
+  \MyFig{0.8}{fig/histogram_src.png}
+
+}
+
+\MyFrame{}
+{
+  \MyFig{1.0}{fig/histogram_graph.png}
+
+}
+
+\MyFrame{ヒストグラム　R課題}
+{
+  次のデータを用いてRでヒストグラムを作成せよ．
+  また，\textbf{hist}関数のオプション\textbf{breaks}を
+  "Sturges"(default), "Scott", "FD"に変更して
+  階級幅の自動推定方法の違いを確認せよ．\\
+  \MyFig{0.9}{quiz/hw.png}
+}
+
+\MyFrame{ヒストグラム　R課題}
+{
+  ヒストグラムが完成したら，
+  RStudioの右上のアイコン
+  \includegraphics[width=8mm]{icon_publish.pdf}をクリックして，
+  RPubsの入力画面で次の内容を入力し，
+  www公開(publish)せよ．\\
+  \alert{www公開されるので個人名など機微な情報は入力しないこと．}
+  \begin{description}
+    \item[Username] tiu学籍番号　（例）tiu22110001\\
+    \item[Title] ヒストグラム\\
+    \item[Description] （空白／説明を入れてもよい）\\
+    \item[Slug] histogram
+  \end{description}
+  （職場で自分のソースコードとしてすぐに活用できるように，
+    自分なりの補足説明やコメントを入れておきましょう．）\\
+    ここでの方法に追加して，
+    他のRのパッケージを使って作図したら評点に加えます．
+}
+
+\MyFrame{最近人気のRパッケージ： \textbf{ggplot2}}
+{
+  美しいグラフを簡単に作成できるパッケージ．\\
+  （構文がパイプ方式でやや特殊）
+  \MyFig{1.0}{ggplot2.png}
+  \MyRef{【ggplot2】gallery}{https://exts.ggplot2.tidyverse.org/gallery}
+}
+
+\end{document}

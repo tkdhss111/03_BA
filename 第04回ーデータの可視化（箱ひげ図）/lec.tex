@@ -1,0 +1,339 @@
+\newcommand{\Draft}{}
+\newcommand{\Slide}{}
+\newcommand{\PrintLecture}{1}
+\newcommand{\PrintSolution}{1}
+\input{header_class.tex}
+\input{../../tex/hss_lualatex.tex}
+\input{../../tex/hss_hyperref.tex}
+\input{../../tex/hss_beamer.tex}
+
+\setbeameroption{hide notes}
+%\setbeameroption{show notes}
+%\setbeameroption{show only notes}
+%\setbeameroption{show notes on second screen=right}
+
+\begin{document}
+
+\maketitle
+
+\MyFrame{}{\tableofcontents}
+
+%\MyFrame{}
+%{
+%  \MyDefinition{パーセンタイル}%ToDo どこで教える．確率・統計？
+%  {
+%  }
+%}
+
+\section{四分位数}
+
+\MyFrame{}
+{
+  \MyDefinition{四分位数}
+  {
+    データの値を小さい順に並べたとき，４等分する位置の値を
+    \MyFill{\ruby{四分位数}{しぶんいすう}}(quartile points)という．
+    小さい方から順に，
+    \MyItems
+    {
+      \item 第１四分位数（$Q_1$）
+      \item 第２四分位数（$Q_2$）・・・中央値（median）
+      \item 第３四分位数（$Q_3$）
+    }
+    \MyFig{0.9}{quantile_order.png}
+  }
+  \MyRef{【WAKARA】四分位数と箱ひげ図}
+  {https://wakara.co.jp/mathlog/20210927}
+}
+
+\MyFrame{\insertsection}
+{
+  \MyFig{1.0}{quantile.png}
+  \MyRef{【WAKARA】四分位数と箱ひげ図}
+  {https://wakara.co.jp/mathlog/20210927}
+}
+
+\MyFrame{}
+{
+  \MyDefinition{箱ひげ図}
+  {
+    最小値，$Q_1$，$Q_2$，$Q_3$，最大値の5つの数値で
+    分布を要約（五数要約）したグラフのことを
+    \MyFill{箱ひげ図}(box plot/box-and-whisker plot)という．
+    \MyFig{0.7}{quantile_boxplot.png}
+  }
+  ただし，ここでの最小値，最大値は，箱の端から\alert{IQRの1.5倍の範囲内}での値とする．IQR$=Q_3-Q_1$はデータの半分が含まれる範囲．\\
+  \MyRef{【数学の景色】箱ひげ図とは～わかりやすく図解}
+  {https://mathlandscape.com/box-plot}
+}
+
+\MyFrame{ヒストグラムと箱ひげ図の対応}
+{
+  \MyFig{1.0}{histogram_boxplot.png}
+  \MyRef{【数学の景色】箱ひげ図とは～わかりやすく図解}
+  {https://mathlandscape.com/box-plot}
+}
+
+\MyFrame{ヒストグラムと箱ひげ図の対応}
+{
+  \MyFig{0.7}{histogram_boxplot1.png}
+  \MyRef{【高校数学.net】}
+  {https://高校数学.net/hakohige-hisutoguramu}
+}
+
+\MyFrame{ヒストグラムと箱ひげ図の対応}
+{
+  \MyFig{0.7}{histogram_boxplot2.png}
+  \MyRef{【高校数学.net】}
+  {https://高校数学.net/hakohige-hisutoguramu}
+}
+
+\MyFrame{ヒストグラムと箱ひげ図の対応}
+{
+  \MyFig{0.7}{histogram_boxplot3.png}
+  \MyRef{【高校数学.net】}
+  {https://高校数学.net/hakohige-hisutoguramu}
+}
+
+\MyFrame{ヒストグラムと箱ひげ図の対応}
+{
+  \MyFig{0.7}{histogram_boxplot4.png}
+  \MyRef{【高校数学.net】}
+  {https://高校数学.net/hakohige-hisutoguramu}
+}
+
+\MyFrame{ヒストグラムと箱ひげ図の対応}
+{
+  \MyFig{0.7}{histogram_boxplot5.png}
+  \MyRef{【高校数学.net】}
+  {https://高校数学.net/hakohige-hisutoguramu}
+}
+
+\MyFrame{箱ひげ図の長所}
+{
+  ヒストグラムでは難しい複数の分布の同時比較ができる．
+  \MyFig{0.35}{boxplot_merit.png}
+}
+
+\MyFrame{箱ひげ図の短所}
+{
+  分布の詳細な形状は分からない．
+  全く同じ箱ひげ図であっても分布は異なる場合がある．
+  （cf バイオリン図）
+  \MyFig{0.7}{boxplot_pitfall.pdf}
+  \MyCap{異なるヒストグラム→同じ箱ひげ図}
+}
+
+\MyFrame{バイオリン図（推奨）}
+{
+  箱ひげ図の周りに分布形状を表す線を引いたグラフ．
+  箱ひげ図の上位互換だが市民権を得ていないため，
+  他者へは多少説明を要す．\\[3mm]
+  \begin{minipage}{0.45\textwidth}
+    \MyFig{1.0}{histogram-vioplot.png}
+  \end{minipage}
+  \begin{minipage}{0.45\textwidth}
+    \MyFig{1.0}{violinplot_graph.png}
+  \end{minipage}
+  \MyCap{バイオリン図（右）}
+  \MyRef{【R CODER】Violin plot in R}
+  {https://r-coder.com/violin-plot-r}
+}
+
+\section{箱ひげ図　問題演習}
+
+\MyFrame{\insertsection}
+{
+  \MyProblem
+  {
+    \MyFig{1.0}{quiz/problem44.png}
+  }
+  \vspace{40mm}
+}
+
+\MyFrame{\insertsection}
+{
+  \MySolution
+  {
+    \MyFig{0.9}{quiz/solution44.png}
+  }
+}
+
+\MyFrame{\insertsection}
+{
+  \MyProblem
+  {
+    \MyFig{1.0}{quiz/problem41.png}
+  }
+  \vspace{40mm}
+}
+
+\MyFrame{\insertsection}
+{
+  \MySolution
+  {
+    \MyFig{0.9}{quiz/solution41.png}
+  }
+}
+
+\MyFrame{\insertsection}
+{
+  \MyProblem
+  {
+    \MyFig{1.0}{quiz/problem42.png}
+  }
+  \vspace{40mm}
+}
+
+\MyFrame{\insertsection}
+{
+  \MySolution
+  {
+    \MyFig{0.8}{quiz/solution42.png}
+  }
+}
+
+\MyFrame{\insertsection}
+{
+  \MyProblem
+  {
+    \MyFig{1.0}{quiz/problem45.png}
+  }
+  \vspace{40mm}
+}
+
+\MyFrame{\insertsection}
+{
+  \MySolution
+  {
+    \MyFig{1.0}{quiz/solution45.png}
+  }
+}
+
+\MyFrame{\insertsection}
+{
+  \MyProblem
+  {
+    \MyFig{1.0}{quiz/problem54.png}
+  }
+  \vspace{40mm}
+}
+
+\MyFrame{\insertsection}
+{
+  \MySolution
+  {
+    \MyFig{1.0}{quiz/solution54.png}
+  }
+}
+
+\MyFrame{\insertsection}
+{
+  \MyProblem
+  {
+    \MyFig{1.0}{quiz/problem14.png}
+  }
+  \vspace{40mm}
+}
+
+\MyFrame{\insertsection}
+{
+  \MySolution
+  {
+    \MyFig{1.0}{quiz/solution14.png}
+  }
+}
+
+\section{箱ひげ図　R演習}
+
+\MyFrame{\insertsection}
+{
+  RStudio Cloudで，
+  次のURLにあるソースコードを\red{タイプ}し箱ひげ図を作成せよ．
+  \alert{コピペすると記憶に定着しないためＮＧ}
+  \url{https://rpubs.com/tkdhss111/boxplot}
+}
+
+\MyFrame{}
+{
+  \MyFig{0.9}{fig/boxplot_data.png}
+
+}
+
+\MyFrame{R カラーパレット}
+{
+  \MyFig{0.8}{R_color_palette.png}
+  \MyFig{0.7}{RGB.png}
+  \MyRef{【ウィキペディア】RGB}{https://ja.wikipedia.org/wiki/RGB}
+}
+
+\MyFrame{}
+{
+  \MyFig{1.0}{fig/boxplot_src.png}
+}
+
+\MyFrame{}
+{
+  \MyFig{1.0}{fig/boxplot_graph.png}
+}
+
+\MyFrame{}
+{
+  \MyFig{0.8}{fig/violinplot_src.png}
+}
+
+\MyFrame{}
+{
+  \MyFig{1.0}{violinplot_graph.png}
+
+}
+
+\section{箱ひげ図　R課題}
+
+\MyFrame{箱ひげ図　R課題}
+{
+  \MyProblem
+  {
+    Rで箱ひげ図とバイオリン図を作成せよ．
+    \MyFig{0.8}{quiz/problem56.png}
+    \MyFig{0.5}{quiz/problem56_hw_data.png}
+  }
+}
+
+\MyFrame{\insertsection}
+{
+  \MySolution
+  {
+    \MyFig{0.7}{quiz/solution56.png}
+  }
+}
+
+\MyFrame{\insertsection}
+{
+  図が完成したら，
+  RStudioの右上のアイコン
+  \includegraphics[width=8mm]{icon_publish.pdf}をクリックして，
+  RPubsの入力画面で次の内容を入力し，
+  www公開(publish)せよ．\\
+  \alert{www公開されるので個人名など機微な情報は入力しないこと．}
+  \begin{description}
+    \item[Username] tiu学籍番号　（例）tiu22110001\\
+    \item[Title] 箱ひげ図\\
+    \item[Description] （空白／説明を入れてもよい）\\
+    \item[Slug] boxplot
+  \end{description}
+  （職場で自分のソースコードとしてすぐに活用できるように，
+    自分なりの補足説明やコメントを入れておきましょう．）\\
+    ここでの方法に追加して，
+    他のRのパッケージを使って作図したら評点に加えます．
+}
+
+\MyFrame{インタラクティブなRパッケージ： \textbf{plotly}}
+{
+  インタラクティブ(interactive)なグラフを作成できるパッケージ．\\
+  （構文がパイプ方式でやや特殊）
+  \MyFig{0.5}{violinplot_plotly.png}
+  \MyRef{【plotly】Violin Plots in R}{https://plotly.com/r/violin}
+}
+
+\end{document}

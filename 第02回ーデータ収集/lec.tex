@@ -1,0 +1,130 @@
+\newcommand{\Draft}{}
+\newcommand{\Slide}{}
+\newcommand{\PrintLecture}{1}
+\newcommand{\PrintSolution}{1}
+\input{header_class.tex}
+\input{../../tex/hss_lualatex.tex}
+\input{../../tex/hss_hyperref.tex}
+\input{../../tex/hss_beamer.tex}
+
+\setbeameroption{hide notes}
+%\setbeameroption{show notes}
+%\setbeameroption{show only notes}
+%\setbeameroption{show notes on second screen=right}
+
+\begin{document}
+
+\maketitle
+
+\MyFrame{}{\tableofcontents}
+
+\section{データの型}
+
+\MyFrame{\insertsection}
+{
+  \begin{description}[浮動小数点型]
+    \item [NULL型] NULL値（値が無いこと） (null) 
+    \item [論理型] 真[true]/偽[false] (logical, boolean) 
+    \item [日時型] 日付や時刻(datetime, date, time) 
+    \item [バイナリ型] バイナリ形式データ(blob) (e.g., 画像) 
+    \item [文字列型] 文字(text, character, string) 
+    \item [整数型] 整数(integer)
+    \item [浮動小数点型] 実数
+      \begin{itemize}
+        \item 単精度(real, float, single)
+        \item 倍精度(real8, double, numeric)
+      \end{itemize}
+  \end{description}
+  SQLiteのREALは倍精度浮動小数点型
+}
+
+\MyFrame{浮動小数点数(floating point number)とは}
+{
+  数値を整数部と指数部で表わしたもの．
+  計算機ではこの表現で数値を扱う．
+  \[（固定小数点数）~1.2345=\underbracket{12345}_{仮数部}\times {\underbracket{10}_{基数}}^{\overbracket{-4}^{指数部}}~（浮動小数点数）\]
+  \MyFig{0.5}{fixed-floating.png}
+  \MyCap{固定小数点数と浮動小数点数の違い}
+  \MyRef
+  {固定小数点数と浮動小数点数の違いを調べよう！}
+  {https://itmanabi.com/fixed-floating}
+}
+
+\section{データファイル形式}% ToDo add more contents here
+
+\MyFrame{\insertsection}
+{
+  \begin{description}[浮動小数点型]
+    \item [csv] カンマ区切り値ファイル(Comma separated values)
+    \item [txt] テキストファイル
+    \item [json] \href{https://camp.trainocate.co.jp/magazine/whats-json}{JSONファイル}
+    \item [xml] XMLファイル
+    \item [xls] Excelファイル形式
+      \begin{itemize}
+        \item [xlsm]マクロ付きExcel
+        \item [xlsx]XML形式Excel
+      \end{itemize}
+  \end{description}
+}
+
+\section{データクレンジング}
+
+\MyFrame{}
+{
+  \MyFig{1.0}{品質の悪いデータによる社会的損失}
+
+  \MyRef
+  {【総務省 ICTスキル総合習得教材】3-1}
+  {https://www.soumu.go.jp/ict_skill/pdf/ict_skill_3_1.pdf}
+}
+
+\MyFrame{}
+{
+  \MyFig{1.0}{データクレンジングツール}
+
+  \MyRef
+  {【総務省 ICTスキル総合習得教材】3-1}
+  {https://www.soumu.go.jp/ict_skill/pdf/ict_skill_3_1.pdf}
+}
+
+\MyFrame{}
+{
+  \MyFig{1.0}{データクレンジングの負担}
+
+  \MyRef
+  {【総務省 ICTスキル総合習得教材】3-1}
+  {https://www.soumu.go.jp/ict_skill/pdf/ict_skill_3_1.pdf}
+}
+
+\MyFrame{}
+{
+  \MyFig{1.0}{国内企業におけるデータ分析の実態}
+
+  \MyRef
+  {【総務省 ICTスキル総合習得教材】3-1}
+  {https://www.soumu.go.jp/ict_skill/pdf/ict_skill_3_1.pdf}
+}
+
+\section{APIを利用したデータ収集}
+
+\MyFrame{\insertsection}
+{
+  次の出典に示す教材の【参考2】を参照すること．\\
+  \MyRef
+  {【総務省 ICTスキル総合習得教材】4-3}
+  {https://www.soumu.go.jp/ict_skill/pdf/ict_skill_4_3.pdf}
+
+  \href{https://www.e-stat.go.jp}{【政府統計の総合窓口（e-Stat）】}　　　
+}
+
+\section{Web scrapingによるデータ収集　R演習}
+
+\MyFrame{\insertsection}
+{
+  RStudio Cloudで，
+  次のURLにあるソースコードを\red{タイプ}し気象庁から気象データを取得せよ．
+  \alert{コピペすると記憶に定着しないためＮＧ}
+  \url{https://rpubs.com/tkdhss111/data_acquisition}
+}
+
+\end{document}

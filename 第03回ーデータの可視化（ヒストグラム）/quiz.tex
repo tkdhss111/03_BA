@@ -1,0 +1,88 @@
+\newcommand{\Release}{}% Set Release or other word
+\newcommand{\Slide}{}% Rename other than 'Slide' to make A4
+\newcommand{\PrintLecture}{1}% Lecture On(1)/Off(0)
+\newcommand{\PrintSolution}{1}% Solution(Answer) On(1)/Off(0)
+\input{header_class.tex}
+\input{../../tex/hss_lualatex.tex}
+\input{../../tex/hss_moodle.tex}
+\input{../../tex/hss_beamer.tex}
+
+\begin{document}
+
+\section{小テスト： \MyClass}
+
+\begin{quiz}{\MyClass}
+
+\QuizShortAnswer
+{
+  次のデータベースで青色の部分のことを英語で何というか？
+  \includegraphics[width=0.5\textwidth]{quiz/table_names_quiz.png}
+}
+{
+  table
+}
+{10}
+{table}
+{}
+{}
+{}
+
+\QuizShortAnswer
+{
+  次のデータベースで緑色の部分のことを英語で何というか？
+  \includegraphics[width=0.5\textwidth]{quiz/table_names_quiz.png}
+}
+{
+  column
+}
+{20}
+{column}
+{}
+{}
+{}
+
+\QuizShortAnswer
+{
+  次のデータベースで橙色の部分のことを英語で何というか？
+  \includegraphics[width=0.5\textwidth]{quiz/table_names_quiz.png}
+}
+{
+  record/row
+}
+{20}
+{record}
+{row}
+{}
+{}
+
+\QuizShortAnswer
+{
+  次のデータベースで黄色の部分のことを英語で何というか？
+  \includegraphics[width=0.5\textwidth]{quiz/table_names_quiz.png}
+}
+{
+  field
+}
+{20}
+{field}
+{}
+{}
+{}
+
+\QuizShortAnswer
+{
+  単峰性の左に歪んだ分布はどれか？\\
+  \includegraphics[width=0.6\textwidth]{problem_histogram_types.png}
+}
+{
+  右に歪んだ分布はeであるが，左に歪んだ分布はない．
+}
+{30}
+{*なし*}
+{*無し*}
+{*ない*}
+{*無い*}
+
+\end{quiz}
+
+\end{document}

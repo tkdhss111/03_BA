@@ -1,0 +1,76 @@
+\newcommand{\Release}{}
+\newcommand{\Slide}{}
+\newcommand{\PrintLecture}{1}
+\newcommand{\PrintSolution}{1}
+\input{header_class.tex}
+\input{../../tex/hss_lualatex.tex}
+\input{../../tex/hss_moodle.tex}
+\input{../../tex/hss_beamer.tex}
+
+\begin{document}
+
+\maketitle
+
+\section{小テスト（\MyClass）}
+
+\begin{quiz}{\MyClass}
+
+\QuizShortAnswer
+{
+  次の箱ひげ図で，真ん中の太線で示される値のことを何というか？
+  \MyFig{0.4}{quiz_boxplot_outlier.png}
+}
+{
+  中央値(median)
+}
+{30}
+{中央値}
+{median}
+{第2四分位数}
+{Q2}
+
+\QuizShortAnswer
+{
+  次の箱ひげ図で，「○」で示される値のことを何というか？
+  \MyFig{0.4}{quiz_boxplot_outlier.png}
+}
+{
+  外れ値(outlier)
+}
+{30}
+{外れ値}
+{outlier}
+{}
+{}
+
+\QuizMultipleChoices
+{
+  箱ひげ図で箱の範囲に含まれるデータは
+  全体のデータの何％か？
+}
+{
+  全データの半分
+}
+{30}
+{25％}
+{*50％}
+{75％}
+{不明}
+
+\QuizShortAnswer
+{
+  次の図を何というか？
+  \MyFig{0.7}{quiz_violin.png}
+}
+{
+  バイオリン図(violin plot)
+}
+{10}
+{バイオリン*}
+{violin*}
+{}
+{}
+
+\end{quiz}
+
+\end{document}

@@ -1,0 +1,73 @@
+---
+title: '箱ひげ図（課題）'
+author: '東京国際大学 データサイエンス教育研究所 竹田 恒'
+date: '2022-08-06'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+	echo = TRUE,
+	message = TRUE,
+	warning = TRUE
+)
+```
+
+---
+
+## データ
+```{r}
+d <- data.frame(
+  a = c(8, 12, 16, 7, 3, 11, 7, 4, 10, 13, 15, 6, 18, 5),
+  b = c(15, 17, 18, 21, 20, 9, 22, 14, 15, 6, 5, 23, 13, 17)) 
+
+library(knitr)
+kable(d)
+```
+
+#### 要約統計量
+```{r}
+summary(d)
+```
+
+```{r echo=TRUE}
+# カラーパレット
+COL <- c(rgb(1, 0, 1, .25), # ピンク
+         rgb(0, 0, 1, .25), # ラベンダー
+         rgb(0, 1, 0, .25)) # グリーン
+```
+
+---
+
+## 箱ひげ図
+```{r}
+# プロット
+boxplot(d, col = COL[1:2],
+        names = c("A", "B"),
+        main = '商品A,Bの販売数（14日間）',
+        xlab = '商品',
+        ylab = '販売数［個］')
+# 罫線
+abline(h = seq(0, 30, 5), lty = 2, col = gray(.5, .25))
+```
+
+## バイオリン図
+```{r include=FALSE}
+library(vioplot)
+```
+```{r}
+# プロット
+vioplot(d, col = COL, rectCol = "white",
+        plotCentre = "line",
+        names = c("A", "B"),
+        main = '商品A,Bの販売数（14日間）',
+        xlab = '商品',
+        ylab = '販売数［個］')
+
+# 平均値(+)
+points(apply(d, 2, mean), pch = 3)
+
+# 罫線
+abline(h = seq(0, 30, 5), lty = 2, col = gray(.5, .25))
+```
+
