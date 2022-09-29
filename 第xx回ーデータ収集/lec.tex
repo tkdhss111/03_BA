@@ -1,0 +1,56 @@
+\newcommand{\Draft}{}
+\newcommand{\Slide}{}
+\newcommand{\PrintLecture}{1}
+\newcommand{\PrintSolution}{1}
+\input{header_class.tex}
+\input{../../tex/hss_lualatex.tex}
+\input{../../tex/hss_hyperref.tex}
+\input{../../tex/hss_beamer.tex}
+
+\setbeameroption{hide notes}
+%\setbeameroption{show notes}
+%\setbeameroption{show only notes}
+%\setbeameroption{show notes on second screen=right}
+
+\begin{document}
+
+\maketitle
+
+\MyFrame{}{\tableofcontents}
+
+\section{section}
+
+\MyFrame{}
+{
+  分析目的に合ったデータは何か検討する．
+}
+
+\MyFrame{データの有用性}
+{
+  test
+}
+
+%ボツ：RFIDの話がBA向けではない。
+%\MyFrame{データ収集技術とウェアラブルデバイス}
+%{
+%  【総務省ICTスキル総合習得プログラム】\\
+%  \url{https://www.soumu.go.jp/ict_skill/making.html}\\
+%  1-2：データ収集技術とウェアラブルデバイス(YouTube動画; 11:08)\\
+%  \vfill
+%  \MyRef
+%  {【総務省】ICTスキル総合習得プログラム 編集加工}
+%  {https://www.soumu.go.jp/ict_skill}
+%}
+
+\MyFrame{APIによるデータ収集と利活用}
+{
+  【総務省ICTスキル総合習得プログラム】\\
+  \url{https://www.soumu.go.jp/ict_skill/making.html}\\
+  1-5 APIによるデータ収集と利活用(YouTube動画; 6:52)\\
+  \vfill
+  \MyRef
+  {【総務省】ICTスキル総合習得プログラム 編集加工}
+  {https://www.soumu.go.jp/ict_skill}
+}
+
+\end{document}

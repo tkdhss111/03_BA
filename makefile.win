@@ -1,0 +1,51 @@
+# N.B. Do not use () as directory name, or error will occur
+DIRS_ALL  :=$(notdir $(shell find . -type d -name '第*'))
+DIRS_LEC  :=$(shell cat dirs_lec.txt)# Lectures only
+DIRS_EXAM :=$(notdir $(shell find . -type d -name '*中間試験*' -or -name '*期末試験*'))
+QUIZ      :=$(notdir $(shell find -name 問題\*.tex))
+
+# Run with: make -j
+release: $(DIRS_LEC)
+#exam: $(DIRS_EXAM)
+
+# N.B. Some lecture does not have moodle quiz, hence not lec.xml
+# is produced and it causes an error...only quizxml is used here.
+.PHONY: $(DIRS_LEC)
+$(DIRS_LEC):
+	#@make class   --directory=$@
+	@make clean   --directory=$@
+	@make release --directory=$@
+	@make release --directory=$@
+	@make quizxml --directory=$@
+
+# Overwrite old recipe above with the same dir name
+#.PHONY: $(DIRS_ALL)
+#$(DIRS_ALL):
+#	@make deleteaddline --directory=$@
+
+#.PHONY: $(DIRS_EXAM)
+#$(DIRS_EXAM):
+#	@make clean  --directory=$@
+#	@make exam   --directory=$@
+#	@make exam   --directory=$@
+#	@make lecxml --directory=$@
+
+each:
+	for d in $(DIRS_LEC) ; \
+		do \
+			pwd ; \
+			echo $$d ; \
+			cd ./$$d ; \
+			make sed ; \
+			cd .. ; \
+		done
+
+echo:
+	@echo $(DIRS_LEC)
+	@echo $(DIRS_ALL)
+	@echo $(DIRS)
+	@echo $(DIRS_EXAM)
+
+dirlec: echo
+	ls | sed '1,3d' > dirs_lec.txt ;\
+	cat dirs_lec.txt

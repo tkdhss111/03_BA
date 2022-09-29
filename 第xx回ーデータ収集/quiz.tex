@@ -1,0 +1,67 @@
+\newcommand{\Release}{}
+\newcommand{\Slide}{}
+\newcommand{\PrintLecture}{1}
+\newcommand{\PrintSolution}{0}
+\input{header_class.tex}
+\input{../../tex/hss_lualatex.tex}
+\input{../../tex/hss_moodle.tex}
+\input{../../tex/hss_beamer.tex}
+
+\begin{document}
+
+\maketitle
+
+\section{小テスト（\MyClass）}
+
+\begin{quiz}{\MyClass}
+
+\QuizShortAnswer
+{
+  $(-2x^3y)^3\times(-2x^3y)$を計算せよ。\\
+  　\\%whole space
+  解答例：答えが$3x^6y^2$のとき，3,6,2と半角数字で解答欄に記入する。
+}
+{
+  $=(-2)^3(x^3)^3y^3\times(-2)x^3y$\\
+  $=-8x^9y^3\times(-2)x^3y$\\
+  $=\{(-8)\times(-2)\}x^{9+3}y^{3+1}$
+  $=16x^{12}y^4$
+}
+{30}
+{16*12*4}
+{}
+{}
+{}
+
+\QuizMultipleChoices
+{
+  $ax^2+bx+c$を平方完成せよ。
+}
+{
+  $=a(x^2+\frac{b}{a}x)+c$\\
+  $=a\{x^2+\frac{b}{a}x+(\frac{b}{2a})^2-(\frac{b}{2a})^2\}+c$\\
+  $=a(x+\frac{b}{2a})^2-\frac{b^2-4ac}{4a}$
+}
+{40}
+{ $a(x+\frac{b}{2a})^2+\frac{b^2-4ac}{2a}$}
+{ $a(x+\frac{b}{2a})^2-\frac{b^2-4ac}{2a}$}
+{ $a(x+\frac{b}{2a})^2+\frac{b^2-4ac}{4a}$}
+{*$a(x+\frac{b}{2a})^2-\frac{b^2-4ac}{4a}$}
+
+\QuizMultipleChoices
+{
+  $ax^2+bx+c=0$を解け。
+}
+{
+  二次方程式の解の公式より，\\
+  \[x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}\]
+}
+{30}
+{*$x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}$}
+{ $x=\frac{-b\pm\sqrt{b^2+4ac}}{2a}$}
+{ $x=\frac{-b\pm\sqrt{b^2-4ac}}{a}$}
+{ $x=\frac{-b\pm\sqrt{b^2+4ac}}{a}$}
+
+\end{quiz}
+
+\end{document}
