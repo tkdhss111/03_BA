@@ -1,0 +1,56 @@
+---
+title: "分類（ロジスティック回帰モデル）"
+author: "東京国際大学 データサイエンス教育研究所 竹田 恒"
+date: "`r Sys.Date()`"
+output:
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+	echo = TRUE,
+	message = TRUE,
+	warning = TRUE
+)
+```
+
+---
+
+## データ
+
+```{r}
+d <- data.frame(x, y)
+str(d)
+```
+
+#### 要約統計量
+
+```{r}
+summary(d)
+```
+
+```{r echo=TRUE}
+# カラーパレット
+# (https://www.rapidtables.com/web/color/RGB_Color.html)
+COL <- c(rgb(255,   0,   0,  255, max = 255), # 赤
+         rgb(  0,   0, 255,  255, max = 255), # 青
+         rgb(  0, 155,   0,  255, max = 255)) # 緑
+```
+
+#### 散布図
+
+```{r}
+```
+
+## 回帰モデル
+
+
+$$
+\begin{align}
+\ln\left(\frac{p}{1-p}\right)&=\beta_0+\beta_1 x_{1i}+\cdots+\beta_p x_{1p}\\
+&ここで，\\
+&p_i： \\
+&x_i： 説明変数（定数）\\
+&\beta： 傾きを表す真の回帰係数（定数）\\
+\end{align}
+$$

@@ -1,0 +1,111 @@
+\newcommand{\Release}{}
+\newcommand{\Slide}{}
+\newcommand{\PrintLecture}{1}
+\newcommand{\PrintSolution}{1}
+\input{header_class.tex}
+\input{../../tex/hss_lualatex.tex}
+\input{../../tex/hss_moodle.tex}
+\input{../../tex/hss_beamer.tex}
+
+\begin{document}
+
+\maketitle
+
+\section{小テスト（\MyClass）}
+
+\begin{quiz}{\MyClass}
+
+\QuizMultipleChoices
+{
+  決定係数を表す式を選択せよ。
+}
+{
+  $R^2=\frac{回帰変動}{全変動}$
+}
+{20}
+{*$R^2=\frac{回帰変動}{全変動}$}
+{ $R^2=\frac{回帰変動}{残差変動}$}
+{ $R^2=\frac{残差変動}{全変動}$}
+{ $R^2=1-\frac{回帰変動}{全変動}$}
+
+\QuizMultipleChoices
+{
+  全変動，残差変動をそれぞれの自由度割った決定係数を
+  \underline{　　　　　　　　　　　}という。$adj.R^2$や$R_f^2$と表記される。
+}
+{
+  全変動，残差変動をそれぞれの自由度割った決定係数を
+  \MyFill{自由度調整済み決定係数}という。$adj.R^2$や$R_f^2$と表記される。
+  \[adj.R^2
+    =1-\frac{残差変動/残差変動の自由度}{全変動/全変動の自由度}
+    =1-\frac{\frac{\sum(y_i-\hat{y})^2}{n-p-1}}
+            {\frac{\sum(y_i-\bar{y})^2}{n-1}}\]
+  ここで，$n,p$はそれぞれ，標本サイズ，説明変数の数である。
+}
+{20}
+{ 自由な決定係数}
+{*自由度調整済み決定係数}
+{ 自由度調整不要決定係数}
+{ 自由度未調整決定係数}
+
+\QuizMultipleChoices
+{
+  統計数理研究所の赤池弘次所長が考案した情報量基準
+  を英語三文字で何というか？
+  また，予測モデルの評価ではこの値は大きい方が良いか否か？
+}
+{
+  統計数理研究所の赤池弘次所長が考案した情報量基準
+  AIC(Akaike Information Criterion)\\
+  \[AIC=-2L+2p\]
+  ここで，
+  $L$：モデルの最大\ruby{対数尤度}{たいすうゆうど}，
+  $p$：モデルの説明変数の数\\
+  AICは値が小さければ小さいほど良い予測モデルとなる。
+  \ruby{交差検証法}{こうさけんしょうほう}で評価しているのと漸近的に等価である。
+}
+{20}
+{*AIC　値が小さいほど良い予測モデル}
+{ BIC　値が小さいほど良い予測モデル}
+{ AIC　値が大きいほど良い予測モデル}
+{ BIC　値が大きいほど良い予測モデル}
+
+\QuizShortAnswer
+{
+  空欄を補充せよ。\\
+  回帰分析に使用する説明変数の数$p$に比べて
+  標本サイズ$n$が著しく少ない場合に
+  \underline{　　　}と呼ばれる問題が発生する。
+}
+{
+  回帰分析に使用する説明変数の数$p$に比べて
+  標本サイズ$n$が著しく少ない場合に，次に示す
+  \MyFill{過学習}と呼ばれる問題が発生する。
+  この問題を回避するには，回帰係数の数($p+1$)の
+  \MyFill{10倍}以上の標本サイズ（学習データサイズ）
+  $n\ge10(p+1)$が必要とされている（経験則）。
+}
+{20}
+{過学習}
+{}
+{}
+{}
+
+\QuizShortAnswer
+{
+  空欄を補充せよ。\\
+  変数選択法の一つである逐次選択法では，増加法，減少法，\underline{　　　}などがある。
+}
+{
+  増減法（ステップワイズ法; stepwise method）
+}
+{20}
+{増減法}
+{}
+{}
+{}
+
+
+\end{quiz}
+
+\end{document}

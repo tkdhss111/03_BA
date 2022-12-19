@@ -1,0 +1,83 @@
+---
+title: "回帰分析（重回帰モデル）"
+author: "東京国際大学 データサイエンス教育研究所 竹田 恒"
+date: "`r Sys.Date()`"
+output:
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+	echo = TRUE,
+	message = TRUE,
+	warning = TRUE
+)
+```
+
+---
+
+## データ
+
+約500の町の心臓病患者の人口割合（％）と喫煙割合（％），自転車通勤割合（％）について調べたデータ
+
+[出典：Scribbr,'Multiple Linear Regression | A Quick Guide (Examples)'](https://www.scribbr.com/statistics/multiple-linear-regression)
+
+```{r}
+d <- read.csv("heart.data.csv")[, -1]
+str(d)
+head(d)
+tail(d)
+```
+
+#### 要約統計量
+
+```{r}
+summary(d)
+```
+
+```{r echo=TRUE}
+# カラーパレット
+# (https://www.rapidtables.com/web/color/RGB_Color.html)
+COL <- c(rgb(255,   0,   0,  255, max = 255), # 赤
+         rgb(  0,   0, 255,  255, max = 255), # 青
+         rgb(  0, 155,   0,  255, max = 255)) # 緑
+```
+
+#### 相関分析図
+
+```{r}
+library(psych)
+pairs.panels(d)
+```
+
+## 重回帰モデル
+
+$$
+\begin{align}
+Y_i=&\beta_0 + \beta_1 x_{i1} + \beta_2 x_{i2} + E_i，
+E_i \sim \mathbb{N}(0, \sigma^2)\\\\
+ここで，&Y_i： 目的変数（心臓病罹患率％）\\
+&x_{i1}： 説明変数1（自転車通勤割合％）\\
+&x_{i2}： 説明変数2（喫煙割合％）\\
+&\beta_0, \beta_1, \beta_2： 偏回帰係数\\
+&E_i：誤差項\\
+&\sigma^2：誤差分散
+\end{align}
+$$
+
+### 回帰分析
+
+```{r}
+fit <- lm(heart.disease ~ biking + smoking, data = d)
+summary(fit)
+```
+
+### 残差分析
+グラフの見方については，
+第09回-回帰分析（残差分析）の講義資料を参照すること。
+
+```{r}
+plot(fit)
+```
+
+---

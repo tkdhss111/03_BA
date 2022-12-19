@@ -1,0 +1,45 @@
+1. Title: Auto-Mpg Data
+
+2. Sources:
+   (a) Origin:  This dataset was taken from the StatLib library which is
+                maintained at Carnegie Mellon University. The dataset was 
+                used in the 1983 American Statistical Association Exposition.
+   (c) Date: July 7, 1993
+
+3. Past Usage:
+    -  See 2b (above)
+    -  Quinlan,R. (1993). Combining Instance-Based and Model-Based Learning.
+       In Proceedings on the Tenth International Conference of Machine 
+       Learning, 236-243, University of Massachusetts, Amherst. Morgan
+       Kaufmann.
+
+4. Relevant Information:
+
+   This dataset is a slightly modified version of the dataset provided in
+   the StatLib library.  In line with the use by Ross Quinlan (1993) in
+   predicting the attribute "mpg", 8 of the original instances were removed 
+   because they had unknown values for the "mpg" attribute.  The original 
+   dataset is available in the file "auto-mpg.data-original".
+
+   "The data concerns city-cycle fuel consumption in miles per gallon,
+    to be predicted in terms of 3 multivalued discrete and 5 continuous
+    attributes." (Quinlan, 1993)
+
+5. Number of Instances: 398
+
+6. Number of Attributes: 9 including the class attribute
+
+7. Attribute Information:
+
+    1. mpg:           continuous 燃費（1mpg=0.425144km／L）
+    2. cylinders:     multi-valued discrete 気筒数
+    3. displacement:  continuous (cu.in. = cubic inch; 1 cu.in. = 16.387cc) 排気量
+    4. horsepower:    continuous　馬力
+    5. weight:        continuous (lb; pound = 0.453592kg) 車体重量
+    6. acceleration:  continuous　加速性能（elapsed time in seconds to go from 0 to 60 miles per hour 時速97km）大きいほど加速が悪い
+    7. model year:    multi-valued discrete　型式年（下2桁）
+    8. origin:        multi-valued discrete　1：アメ車，2：欧州車，3：日本車
+    9. car name:      string (unique for each instance)　車名
+
+8. Missing Attribute Values:  horsepower has 6 missing values
+

@@ -1,0 +1,153 @@
+\newcommand{\Draft}{}
+\newcommand{\Slide}{}
+\newcommand{\PrintLecture}{1}
+\newcommand{\PrintSolution}{1}
+\input{header_class.tex}
+\input{../../tex/hss_lualatex.tex}
+\input{../../tex/hss_hyperref.tex}
+\input{../../tex/hss_beamer.tex}
+
+\setbeameroption{hide notes}
+%\setbeameroption{show notes}
+%\setbeameroption{show only notes}
+%\setbeameroption{show notes on second screen=right}
+
+\begin{document}
+
+\maketitle
+
+\MyFrame{}{\tableofcontents}
+
+\section{多重共線性}
+
+\MyFrame{\insertsection}
+{
+  重回帰分析で相関関係が強い説明変数があると
+  回帰係数の大きさが過大に推定される問題が発生する。
+  この問題を\MyFill{\ruby{多重共線性}{たじゅうきょうせんせい}}
+  (multi-collinearity)という。日本語では「マルチコ」とよく呼ばれる。
+}
+
+\subsection{VIF（分散拡大係数）}
+
+\MyFrame{\insertsubsection}
+{
+  \MyDefinition{VIF（分散拡大係数）}
+  {
+    説明変数$x_i$を目的変数にした回帰モデル
+    （ただし，$x_i$は説明変数から除く）
+    $x_i = \beta_0 + \beta_1 x_1 + \cdots + \beta_p x_p$
+    を用いて計算した決定係数を$R_i^2$としたとき，次式で表される指標を
+    \MyFill{VIF}（variance inflation factor；分散拡大係数）という。
+    \[VIF_i = \frac{1}{1-R_i^2}\]
+    $VIF$は重回帰モデルを使った回帰分析における
+    多重共線性の深刻さを定量化する指標として用いられる。
+  }
+}
+
+\MyFrame{VIF（分散拡大係数）}
+{
+  $x_1=\beta_0+\beta_2 x_2+\beta_3 x_3+\cdots+\beta_p x_p
+  \ra R_1^2 \ra VIF_1$\\
+  $x_2=\beta_0+\beta_1 x_1+\beta_3 x_3+\cdots+\beta_p x_p
+  \ra R_2^2 \ra VIF_2$\\
+  $\vdots$\\
+  $VIF$は回帰係数の分散，つまり不確定性が多重共線性のために
+  どれだけ増加したかを測定する指標。
+  多重共線性があると回帰係数が学習させるデータによって
+  値が毎回大きく異なる（不安定になる）。
+}
+
+%\MyFrame{VIF（分散拡大係数）と相関係数の関係性}
+\MyFrame{}
+{
+  経験的に$VIF>10$で多重共線性の程度が大きいと判断する。\\
+  $VIF$が大きい説明変数をモデルから取り除くことで対処する。
+  \MyFig{0.6}{R/vif_r.png}
+  \footnotesize
+  $VIF = 10 \ra R = 0.95$，
+  $VIF =  5 \ra R = 0.9$，
+  $VIF =  3 \ra R = 0.8$
+}
+
+\MyFrame{Rを用いた多重共線性の確認（VIF）}
+{
+  \MyFig{0.55}{rstudio_vif.png}
+}
+
+\MyFrame{}
+{
+  %\MyProblem
+  %{
+    \begin{table}[h]
+      \begin{tabular}{rr}
+        \hline
+        説明変数 & VIF（分散拡大係数） \\
+        \hline
+        cyl  & 15.4\\
+        disp & 21.6\\
+        hp   & 9.8\\
+        drat & 3.4\\
+        wt   & 15.2\\
+        qsec & 7.5\\
+        vs   & 5.0\\
+        am   & 4.6\\
+        gear & 5.4\\
+        carb & 7.9\\
+        \hline
+      \end{tabular}
+    \end{table}
+  %}
+}
+
+\section{交差検証法（cross validation）}
+
+\MyFrame{\insertsection}
+{
+  \MyDefinition{\ruby{交差検証法}{こうさけんしょう}}
+  {
+    標本データを学習データと検証データに分割し，
+    学習データからモデルを推定し検証データで予測誤差を計算する。
+    この処理を学習データと検証データを入れ替えて繰り返すことで
+    より良い予測誤差の推定値を出す方法を
+    \MyRef{\ruby{交差検証法}{こうさけんしょうほう}
+    (cross-validation; CV)}という。
+    学習データをできるだけ減らさずに予測誤差のよい推定値を得る方法である。
+    \MyItems
+    {
+      \item K分割交差検証法(K-fold cross-validation)
+      \item 繰り返しK分割交差検証法(repeated k-fold cross validation)
+      \item １個抜き交差検証法(Leave one out cross-validation；LOOCV)\\
+        ｋ分割交差検証法でKを標本サイズｎにしたもの，
+        つまり１要素だけが検証データになる。
+    }
+  }
+}
+
+\MyFrame{ホールドアウト検証法}
+{
+  データを交差させることなく訓練データとテストデータに分けて
+  予測の評価する方法は\MyFill{ホールドアウト検証法}という。
+  交差検証法の中で説明されることが多いが
+  データの交差を行っていないため別物である。
+  標本データを訓練データとテストデータに
+  分割する最も単純なモデル評価方法である。
+}
+
+\MyFrame{\insertsection　注意点}
+{
+  交差検証を使い，モデル選択やハイパーパラメータの決定が行われるが，
+  この行為自体は，訓練データ＋検証データ全体に対して
+  過剰適合(overfitting)を招き，交差検証の結果自体は信用できない結果となる。
+  特定の公開データセットに対して，
+  新しい機械学習のモデルで交差検証の結果が改善したという
+  論文発表が多数あるが，
+  そのような手法はその公開データセットに対する過剰適合の可能性がある。\\
+  【対策】
+  訓練データ，検証データの他にテストデータを用意しておき，
+  訓練データ，検証データでモデル選定を行い最後にテストデータを使って評価する。
+  \MyRef{交差検証　注意点　改変}
+  {https://ja.wikipedia.org/wiki/%E4%BA%A4%E5%B7%AE%E6%A4%9C%E8%A8%BC}
+}
+
+\end{document}

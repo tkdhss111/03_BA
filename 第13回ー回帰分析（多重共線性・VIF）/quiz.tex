@@ -1,0 +1,106 @@
+\newcommand{\Release}{}
+\newcommand{\Slide}{}
+\newcommand{\PrintLecture}{1}
+\newcommand{\PrintSolution}{1}
+\input{header_class.tex}
+\input{../../tex/hss_lualatex.tex}
+\input{../../tex/hss_moodle.tex}
+\input{../../tex/hss_beamer.tex}
+
+\begin{document}
+
+\maketitle
+
+\section{小テスト（\MyClass）}
+
+\begin{quiz}{\MyClass}
+
+\QuizShortAnswer
+{
+  空欄を補充せよ。\\
+  重回帰分析で相関関係が強い説明変数があると
+  回帰係数の大きさが過大に推定される問題が発生する。
+  この問題を\underline{　　　　　}
+  (multi-collinearity)という。日本語では「マルチコ」とよく呼ばれる。
+}
+{
+  重回帰分析で相関関係が強い説明変数があると
+  回帰係数の大きさが過大に推定される問題が発生する。
+  この問題を\MyFill{\ruby{多重共線性}{たじゅうきょうせんせい}}
+  (multi-collinearity)という。日本語では「マルチコ」とよく呼ばれる。
+}
+{20}
+{多重共線性}
+{}
+{}
+{}
+
+\QuizShortAnswer
+{
+  空欄を補充せよ。\\
+  説明変数$x_i$を目的変数にした回帰モデル
+  （ただし，$x_i$は説明変数から除く）
+  $x_i = \beta_0 + \beta_1 x_1 + \cdots + \beta_p x_p$
+  を用いて計算した決定係数を$R_i^2$としたとき，次式で表される指標を
+  \underline{　　　　　　}（VIF: variance inflation factor）という。
+  \[VIF_i = \frac{1}{1-R_i^2}\]
+  $VIF$は重回帰モデルを使った回帰分析における
+  多重共線性の深刻さを定量化する指標として用いられる。
+}
+{
+  説明変数$x_i$を目的変数にした回帰モデル
+  （ただし，$x_i$は説明変数から除く）
+  $x_i = \beta_0 + \beta_1 x_1 + \cdots + \beta_p x_p$
+  を用いて計算した決定係数を$R_i^2$としたとき，次式で表される指標を
+  \MyFill{分散拡大係数}（VIF: variance inflation factor）という。
+  \[VIF_i = \frac{1}{1-R_i^2}\]
+  $VIF$は重回帰モデルを使った回帰分析における
+  多重共線性の深刻さを定量化する指標として用いられる。
+}
+{20}
+{分散拡大係数}
+{}
+{}
+{}
+
+\QuizMultipleChoices
+{
+  説明変数$x_i$を目的変数にした回帰モデル
+  （ただし，$x_i$は説明変数から除く）
+  $x_i = \beta_0 + \beta_1 x_1 + \cdots + \beta_p x_p$
+  を用いて計算した決定係数を$R_i^2$としたとき，
+  $VIF$を表す数式として正しいものを選択せよ。
+}
+{
+  $VIF_i = \frac{1}{1-R_i^2}$
+}
+{20}
+{ $VIF_i = 1-\frac{1}{R_i}$}
+{ $VIF_i = \frac{1}{1-R_i}$}
+{ $VIF_i = 1-\frac{1}{R_i^2}$}
+{*$VIF_i = \frac{1}{1-R_i^2}$}
+
+\QuizShortAnswer
+{
+  空欄に入る数値を記入せよ。\\
+  経験的に$VIF>$\underline{　}で多重共線性の程度が大きいと判断する。\\
+  $VIF$が大きい説明変数をモデルから取り除くことで対処する。
+}
+{
+  経験的に$VIF>10$で多重共線性の程度が大きいと判断する。\\
+  $VIF$が大きい説明変数をモデルから取り除くことで対処する。
+  \MyFig{0.6}{R/vif_r.png}
+  \footnotesize
+  $VIF = 10 \ra R = 0.95$，
+  $VIF =  5 \ra R = 0.9$，
+  $VIF =  3 \ra R = 0.8$
+}
+{40}
+{10}
+{}
+{}
+{}
+
+\end{quiz}
+
+\end{document}

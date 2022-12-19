@@ -7,22 +7,275 @@
 \input{../../tex/hss_hyperref.tex}
 \input{../../tex/hss_beamer.tex}
 
-\setbeameroption{hide notes}
-%\setbeameroption{show notes}
-%\setbeameroption{show only notes}
-%\setbeameroption{show notes on second screen=right}
-
 \begin{document}
 
 \maketitle
 
 \MyFrame{}{\tableofcontents}
 
-\section{section}
+\section{重回帰モデル}
 
-\MyFrame{}
+\MyFrame{\insertsection}
 {
-  test
+  \MyDefinition{重回帰モデル}
+  {
+    説明変数が２つ以上の回帰モデルを\MyFill{重回帰モデル}という。
+    $Y_i=\beta_0+\beta_1 x_{i1}+\beta_2 x_{i2}
+    +\cdots+\beta_p x_{ip}+E_i,\quad E_i\sim \mathbb{N}(0,\sigma^2)$
+    $i=1,2,\dots,n$\\
+    ここで，
+    $Y_i$は目的変数，
+    $x_{i1}, x_{i2},\dots, x_{ip}$は説明変数（$p$種類），
+    $E_i$は誤差項，
+    $\beta_0, \beta_1,\dots, \beta_p$は偏回帰係数（$p+1$個），
+    $\sigma^2$は誤差分散である。
+  }
+  重回帰モデルの回帰係数を偏回帰係数というが，
+  偏（partial）は，他の説明変数の影響を除外した場合の
+  当該変数の重みという意味である。
 }
+
+\section{重回帰モデルの行列表現}
+
+\MyFrame{\insertsection}
+{
+  $\bm{Y}=
+  \begin{bmatrix}
+    Y_1\\
+    Y_2\\
+    \vdots\\
+    Y_n
+  \end{bmatrix}$,
+  $\bm{X}=
+  \begin{bmatrix}
+    1      & x_{11} & \cdots & x_{1p}\\
+    1      & x_{21} & \cdots & x_{2p}\\
+    \vdots & \vdots & \ddots & \vdots\\
+    1      & x_{n1} & \cdots & x_{np}
+  \end{bmatrix}$,
+  $\bm{\beta}=
+  \begin{bmatrix}
+    \beta_0\\
+    \beta_1\\
+    \vdots\\
+    \beta_p
+  \end{bmatrix}$,
+  $\bm{E}=
+  \begin{bmatrix}
+    E_1\\
+    E_2\\
+    \vdots\\
+    E_n
+  \end{bmatrix}$
+%
+  \[\bm{Y}=\bm{X}\bm{\beta}+\bm{E}\]
+  $\bm{Y}$：目的変数ベクトル，
+  $\bm{X}$：計画行列（拡大データ行列）\\
+  $\bm{\beta}$：偏回帰係数ベクトル，
+  $\bm{E}$：誤差ベクトル
+}
+
+\MyFrame{\insertsection}
+{
+  \[\bm{b}=(\bm{X}'\bm{X})^{-1}\bm{X}'\bm{y}\]
+  \[\bm{\hat{y}}=\bm{X}\bm{b}=\bm{X}(\bm{X}'\bm{X})^{-1}\bm{X}'\bm{y}=\bm{H}\bm{y}\]
+  \[\bm{H}=\bm{X}(\bm{X}'\bm{X})^{-1}\bm{X}'\]
+  $\bm{y}$：目的値ベクトル，
+  $\bm{\hat{y}}$：適合値（fitted values）ベクトル\\
+  $\bm{b}$：偏回帰係数の推定値ベクトル（最小二乗推定値）\\
+  $\bm{X}$：計画行列（拡大データ行列），
+  $\bm{E}$：誤差ベクトル\\
+  $\bm{H}$：ハット行列（射影行列）\\
+  \MyBox{0.7}
+  {ハット行列の対角成分は\MyFill{\ruby{梃子}{てこ}比}と呼ばれる。}
+}
+
+\section{ダミー変数}
+
+\MyFrame{\insertsection}
+{
+  \MyDefinition{ダミー変数}
+  {
+    カテゴリ変数やバイナリ変数（True/False）などの数値変数でない
+    変数に対して0と1を用いて数値化した変数を\MyFill{ダミー変数}という。
+    通常，0（非該当），1（該当）に割り振られる。
+  }
+}
+
+\MyFrame{\insertsection}
+{
+  \MyExample{ダミー変数}
+  {
+    True(1), False(0)\\
+    男性(0)，女性(1)\\
+    既婚(1)，未婚(0)
+  }
+  \begin{table}[]
+    \begin{tabular}{rrrrr}
+    被験者番号 & 性別 & 性別ダミー &  婚姻& 婚姻ダミー \\
+    \hline
+             1 &  男  & 0          &  既婚&  1\\
+             2 &  女  & 1          &  未婚&  0\\
+             3 &  男  & 0          &  未婚&  0
+    \end{tabular}
+  \end{table}
+}
+
+\section{モデル評価}
+
+\subsection{決定係数}
+
+\MyFrame{\insertsubsection}
+{
+  \MyDefinition{自由度調整済み決定係数}
+  {
+    自由度調整済み決定係数
+    \[Adj. R^2=1-\frac{n-1}{n-p-1}(1-R^2)\]
+  }
+}
+
+% ToDo: more explanation is needed
+
+\subsection{回帰モデルの有意性検定}
+
+\MyFrame{回帰の有意性の検定}
+{
+  回帰式そのものが目的変数に対して効果があるかを調べるために，
+  すべての偏回帰係数が0であるという帰無仮説を設定して検定する。
+  残差変動のバラツキに対する回帰変動のバラツキが相対的に大きいかどうかを検定する。\\
+  $H_0:~\beta_1 = \beta_2 = \cdots = \beta_p = 0$\\
+  $H_a:~$少なくとも１つの$\beta_j \ne 0, \quad j \in \{1,2,\dots,p\}$\\
+  \MyBox{0.4}{切片$\beta_0$は含まれない!}
+  次式のF検定統計量が自由度$p$と$n-p-1$のF分布に従う。\\
+  $F=\frac{回帰変動の平均平方}{残差変動の平均平方} 
+    =\frac{MSR}{MSE}
+    =\frac{\sum_{i=1}^n(\hat{y}_i-\bar{y})^2/p}{\sum_{i=1}^n(y_i-\hat{y}_i)^2/(n-p-1)}\sim F(p, n-p-1)$\\
+}
+
+\MyFrame{偏回帰係数の有意性の検定}
+{
+  偏回帰係数が0でない \Ra 説明変数は目的変数に対する影響は統計的に有意\\
+  $H_0:~\beta_j = 0, \quad j \in \{0,1,\dots,p\}$\\
+  $H_a:~\beta_j \ne 0$\\
+  \MyBox{0.4}{切片$\beta_0$も含まれる}
+  \[T=\frac{偏回帰係数の差}{標準誤差}=\frac{\hat{\beta}_j - 0}{s\{\hat{\beta_j}\}}\sim t(n-p-1)\]
+  偏回帰係数が0のときは，その説明変数がいかなる値であっても目的変数の説明には
+  寄与しない。つまり，その説明変数は不要ということになる。
+}
+
+\MyFrame{回帰分析結果1}
+{
+  \small
+  \verbatiminput{R/summary_lm1.tex}
+}
+
+\MyFrame{回帰分析結果1 （真の回帰モデル）}
+{
+  目的変数を生成した（真の）回帰モデル
+  \blue
+  {
+    \[Y_i= E_i, \quad E_i\sim \mathbb{N}(0, 10^2)\]
+  }
+
+  回帰分析に使用した回帰モデル
+  \[Y_i=\beta_0+\beta_1 x_{i1}+\beta_2 x_{i2}+E_i,\quad E_i\sim \mathbb{N}(0,\sigma^2)\]
+
+  説明変数\\
+  $x_1 = 1, 2, \dots, 100$\\
+  $x_2 = 1^2, 2^2, \dots, 100^2$
+}
+
+\MyFrame{回帰分析結果2}
+{
+  \small
+  \verbatiminput{R/summary_lm2.tex}
+}
+
+\MyFrame{回帰分析結果2 （真の回帰モデル）}
+{
+  目的変数を生成した（真の）回帰モデル
+  \blue
+  {
+    \[Y_i= 8 + E_i, \quad E_i\sim \mathbb{N}(0, 10^2)\]
+  }
+
+  回帰分析に使用した回帰モデル
+  \[Y_i=\beta_0+\beta_1 x_{i1}+\beta_2 x_{i2}+E_i,\quad E_i\sim \mathbb{N}(0,\sigma^2)\]
+
+  説明変数\\
+  $x_1 = 1, 2, \dots, 100$\\
+  $x_2 = 1^2, 2^2, \dots, 100^2$
+}
+
+\MyFrame{回帰分析結果3}
+{
+  \small
+  \verbatiminput{R/summary_lm3.tex}
+}
+
+\MyFrame{回帰分析結果3 （真の回帰モデル）}
+{
+  目的変数を生成した（真の）回帰モデル
+  \blue
+  {
+    \[Y_i= 8 + 4 x_1 + E_i, \quad E_i\sim \mathbb{N}(0, 10^2)\]
+  }
+
+  回帰分析に使用した回帰モデル
+  \[Y_i=\beta_0+\beta_1 x_{i1}+\beta_2 x_{i2}+E_i,\quad E_i\sim \mathbb{N}(0,\sigma^2)\]
+
+  説明変数\\
+  $x_1 = 1, 2, \dots, 100$\\
+  $x_2 = 1^2, 2^2, \dots, 100^2$
+}
+
+\MyFrame{回帰分析結果4}
+{
+  \small
+  \verbatiminput{R/summary_lm4.tex}
+}
+
+\MyFrame{回帰分析結果4 （真の回帰モデル）}
+{
+  目的変数を生成した（真の）回帰モデル
+  \blue
+  {
+    \[Y_i= 8 + 4 x_1 + 2 x_2 + E_i, \quad E_i\sim \mathbb{N}(0, 10^2)\]
+  }
+
+  回帰分析に使用した回帰モデル
+  \[Y_i=\beta_0+\beta_1 x_{i1}+\beta_2 x_{i2}+E_i,\quad E_i\sim \mathbb{N}(0,\sigma^2)\]
+
+  説明変数\\
+  $x_1 = 1, 2, \dots, 100$\\
+  $x_2 = 1^2, 2^2, \dots, 100^2$
+}
+
+%\section{弾性値}
+%
+%\MyFrame{\insertsection}
+%{
+%  \MyDefinition{弾性値}
+%  {
+%    説明変数$x$の変化率$\frac{dx}{x}$に対する
+%    目的変数$y$の変化率$\frac{dy}{y}$の
+%    比$\frac{\frac{dy}{y}}{\frac{dx}{x}}$のことを
+%    \MyFill{弾性値}（elasticity）という。
+%    回帰モデルで変数の自然対数を取ったものは\MyFill{弾性モデル}と呼ばれる。
+%    $\ln Y = \beta_0 + \beta_1 \ln x + E$\\
+%    $\beta_1$が弾性値となる。
+%
+%  }
+%  弾性モデルを$\ln x$で両辺を微分すると，$\frac{d \ln Y}{d \ln x}=\beta_1$\\
+%  弾性値は$\frac{\frac{dy}{y}}{\frac{dx}{x}}=\frac{dy \frac{d \ln y}{dy}}{dx \frac{d \ln x}{dx}}=\frac{d\ln y}{d\ln x}$と変形でき，これは$\beta_1$と一致する。
+%}
+%
+%\MyFrame{\insertsection}
+%{
+%  \MyExample{\insertsection}
+%  {
+%    所得が1％増加したら需要が0.7％増加する場合，需要の所得弾力性は0.8となる。
+%  }
+%}
 
 \end{document}

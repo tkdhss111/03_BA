@@ -1,1 +1,319 @@
-../../tex/makefile_class
+#======================================================
+#
+# Makefile for Generating Handout, Lecture and Quiz PDF
+#
+#
+# @author Hisashi Takeda, Ph.D.
+# @date 2022-06-20
+ifeq ($(OS),Windows_NT) # is Windows_NT on XP, 2000, 7, Vista, 10...
+	detected_OS := Windows
+else
+	detected_OS := $(shell uname)  # same as "uname -s"
+endif
+TIMESTAMP:=$(shell date "+%Y-%m-%d-%H%M%S"| tr -d ' ')
+TIMESTART:=$(shell date "+%H:%M:%S")
+CLASS    :=$(notdir $(shell pwd))
+INTRO    :=intro
+LEC      :=lec
+QUIZ     :=quiz
+EXAM     :=exam
+LATEX    :=lualatex
+FLAGS    :=-recorder -shell-escape -output-directory=build
+DFLAGS   :=$(FLAGS) -interaction=nonstopmode -halt-on-error -file-line-error
+RFLAGS   :=$(FLAGS) -interaction=batchmode
+SOL      :=sol
+LABEL    :=Problem
+PW       :=ds
+MKDIR    :=mkdir -p
+
+.PHONY: release exam archive lec quiz
+.NOTPARALLEL: soloff cleanrelease archive
+
+default: lec
+
+renamepdf:
+	sh ../../tex/rename_pdf.sh
+
+pullauto:
+	cp ../../tex/hss_auto_compiler/auto* ./
+
+lnauto:
+	unlink auto
+	ln -s ../../tex/hss_auto_compiler/auto ./
+
+time:
+	@echo 'Start time: ' $(TIMESTART)
+	@echo '  End time: ' $(shell date "+%H:%M:%S")
+
+# Run this twice to generate ToC for WinOS and do not include xml here
+# For Linux, para is used
+# *ho must be last placed for xml, otherwise too many quizzes are to be generated due to overlay
+ifeq ($(detected_OS), Windows)
+release: cleanrelease soloff lecon quiz quizho quizsol quizsolho lec lecho lecsol lecsolho renamepdf archive cleantex
+else
+release: cleanrelease soloff lecon para renamepdf archive cleantex
+endif
+
+run: save lecho
+
+test: save quizho
+
+auto: lecho
+
+#run: lec.tex
+#	@echo S: Debugging lec.tex:
+#	@$(MKDIR) build
+#	@$(LATEX) $(DFLAGS) $<
+#	@cp build/lec.pdf ./
+#	@echo E: Debugging lec.tex and copy pdf to curr dir
+
+#test: quiz.tex
+#	@echo S: Debugging quiz.tex:
+#	@$(MKDIR) build
+#	@$(LATEX) $(DFLAGS) $<
+#	@cp build/quiz.pdf ./
+#	@echo E: Debugging quiz.tex and copy pdf to curr dir
+
+# Producing xml is time consuming, so run this after release if you are in trouble
+xml: quizxml lecxml
+
+exam: release/$(EXAM).pdf
+
+lec: release/$(LEC).pdf
+
+lecho: release/$(LEC)-handout.pdf
+
+lecsol: release/$(LEC)$(SOL).pdf
+
+lecsolho: release/$(LEC)$(SOL)-handout.pdf
+
+quiz: release/$(QUIZ).pdf
+
+quizsol: release/$(QUIZ)$(SOL).pdf
+
+quizho: release/$(QUIZ)-handout.pdf
+
+quizsolho: release/$(QUIZ)$(SOL)-handout.pdf
+
+quizxml: release/$(QUIZ).xml
+
+lecxml: release/$(LEC).xml
+
+intro: release/$(INTRO).pdf
+
+r2tex: build/r2tex.pdf
+
+para: $(QUIZ).tex $(LEC).tex $(QUIZ)$(SOL).tex $(LEC)$(SOL).tex
+	@echo S: Parallel compiling: $^
+	@$(MKDIR) build
+	@parallel make ::: $(addprefix release/, $(addsuffix .pdf, $(basename $^)))
+	@parallel make ::: $(addprefix release/, $(addsuffix -handout.pdf, $(basename $^)))
+	@echo E: Parallel compiling
+
+# Set file names and class title from current dir name
+#sed -i "s/AUTO-REPLACE-CLASS/$(CLASS)/" header_class.tex DEPRECATED use renamepdf
+#to avoid language problem in windows
+class: header
+	@echo S: Installing class files
+	@mv template_lec.tex $(CLASS)_lec.tex ; \
+	mv template_quiz.tex $(CLASS)_quiz.tex
+	@echo E: Installing class files
+
+header:
+	@cp ../tex/header_class.tex header_class.tex
+	@sh ../../tex/auto_replace.sh
+
+archive/release_ver_$(TIMESTAMP)/%.pdf: %.pdf
+	cp $< archive/release_ver_$(TIMESTAMP)/
+
+archive:
+	@echo S: Making archive
+	@mkdir -p archive/release_ver_$(TIMESTAMP)
+	@cp makefile* archive/release_ver_$(TIMESTAMP)/
+	@cp *.tex archive/release_ver_$(TIMESTAMP)/
+ifneq ($(wildcard *.pdf),)
+	cp *.pdf archive/release_ver_$(TIMESTAMP)/
+endif
+ifneq ($(wildcard build/*.xml),)
+	cp build/*.xml archive/release_ver_$(TIMESTAMP)/
+endif
+ifneq ($(wildcard fig),)
+	cp -r fig archive/release_ver_$(TIMESTAMP)/
+endif
+	@echo E: Making archive
+
+save:
+	echo S: Saving tex file for backup 
+	@mkdir -p archive
+	@cp lec.tex archive/lec_$(TIMESTAMP).tex
+	@cp quiz.tex archive/quiz_$(TIMESTAMP).tex
+	@echo E: Saving tex file for backup 
+
+#
+# Convert quiz(kanji) into sequential number for moodle quiz bank 
+#
+release/%.xml: build/%-moodle.xml
+	@echo S: Making moodle.xml 
+	@echo ___$<' -> '$@
+	@awk "/$(LABEL)/{sub(/$(LABEL)/,sprintf(\"$(LABEL)%2d\",++i))}{print}" $< > $@
+#	head -n25 $@
+	@echo E: Making moodle.xml 
+
+#
+# Make password-lock PDF and copy pdf file in build to curr dir
+# N.B. PDF file in build dir is to be removed automatically
+#
+release/%.pdf: build/%.pdf
+	@echo S: Setting pdf pw:
+	@echo ___$<' -> '$@
+	@$(MKDIR) release
+	@pdftk $< output $@ user_pw $(PW)
+	@echo E: Setting pdf pw
+
+#
+# Compile LuaLatex Script
+#
+build/%.pdf: %.tex
+	@echo S: Compiling:
+	@echo ___$<' -> '$@ 
+	@$(MKDIR) build
+	@$(LATEX) $(DFLAGS) $<
+	@cp $@ ./
+	@echo E: Compiling and copy pdf to curr dir
+
+#
+# Compile LuaLatex Script for Handout
+#
+build/%-handout.pdf: %.tex
+	@echo S: Compiling:
+	@echo ___$<' -> '$@ 
+	@$(MKDIR) build
+	@$(LATEX) $(DFLAGS) -jobname=$(basename $(notdir $@)) $<
+	@cp $@ ./
+	@echo E: Compiling and copy pdf to curr dir
+
+#
+# Copy original and set PrintSolution and PrintLecture to 1
+# ToDo. investigate why copied file is removed
+#
+%$(SOL).tex: %.tex
+	@echo S: Creating solution tex file:
+	@echo ___$<' cp-> '$@ 
+	@cp $< $@
+	@sed -i "s/PrintSolution}{0}/PrintSolution}{1}/" $@ 
+	@sed -i "s/PrintLecture}{0}/PrintLecture}{1}/" $@ 
+	@echo E: Creating solution tex file
+
+# EXAM is quiz with lecture textbox
+# Copy original and set PrintSolution and PrintLecture to 0
+#
+$(EXAM).tex: $(LEC).tex
+	@echo S: Creating examination tex file:
+	@echo ___$<' cp-> '$@ 
+	@cp $< $@
+	@sed -i "s/PrintSolution}{1}/PrintSolution}{0}/" $@ 
+	@sed -i "s/PrintLecture}{1}/PrintLecture}{0}/" $@ 
+	@echo E: Creating examination tex file
+
+#
+# Set PrintSolution to 0
+# 
+soloff:
+	@echo S: Setting PrintSolution to 0 
+	@sed -i "s/PrintSolution}{1}/PrintSolution}{0}/" $(LEC).tex
+	@sed -i "s/PrintSolution}{1}/PrintSolution}{0}/" $(QUIZ).tex
+	@echo E: Setting PrintSolution to 0 
+
+#
+# Set PrintLecture to 0
+# 
+lecoff:
+	@echo S: Setting PrintLecture to 0 
+	@sed -i "s/PrintLecture}{1}/PrintLecture}{0}/" $(LEC).tex
+	@sed -i "s/PrintLecture}{1}/PrintLecture}{0}/" $(QUIZ).tex
+	@echo E: Setting PrintLecture to 0 
+
+#
+# Set PrintLecture to 1
+# 
+lecon:
+	@echo S: Setting PrintLecture to 1 
+	@sed -i "s/PrintLecture}{0}/PrintLecture}{1}/" $(LEC).tex
+	@sed -i "s/PrintLecture}{0}/PrintLecture}{1}/" $(QUIZ).tex
+	@echo E: Setting PrintLecture to 1 
+
+#
+# Cleaners
+#
+clean: cleantex cleanpdf cleanxml cleanrelease cleanbuild
+
+cleantex:
+	rm -f $(LEC)$(SOL).tex $(QUIZ)$(SOL).tex $(EXAM).tex
+	rm -f *.aux *.auxlock *.fls *.nav *.snm *.log *.out *.toc *.synctex.gz *-moodle.xml *.w18
+
+cleanpdf:
+	rm -f $(LEC)$(SOL).pdf $(QUIZ)$(SOL).pdf
+	rm -f $(LEC)$(SOL)-handout.pdf $(QUIZ)$(SOL)-handout.pdf
+	rm -f $(LEC).pdf $(QUIZ).pdf
+	rm -f $(LEC)-handout.pdf $(QUIZ)-handout.pdf
+	rm -f $(INTRO).pdf $(EXAM).pdf
+
+cleanxml:
+	rm -f $(QUIZ).xml $(QUIZ)$(SOL).xml
+
+cleanrelease:
+	rm -rf release
+
+cleanbuild:
+	rm -rf build
+
+cleanarchive:
+	rm -rf archive
+
+echo:
+ifeq ($(strip $(QUIZ)),)
+	echo "Error*** quiz.tex not found" ; exit 1 
+endif
+ifeq ($(strip $(LEC)),)
+	echo "Error*** lec.tex not found" ; exit 1
+endif
+	@echo ${detected_OS}
+	@pwd
+	@echo $(TIMESTAMP)
+	@echo $(CLASS)
+	@echo $(LEC)
+	@echo $(LEC)$(SOL)
+	@echo $(QUIZ)
+	@echo $(QUIZ)$(SOL)
+	@echo $(EXAM)
+	@echo $(LATEX) $(DFLAGS)
+	@echo $(LATEX) $(RFLAGS)
+
+showlecho:
+	okular $(LEC)-handout.pdf 
+
+showlec:
+	okular $(LEC).pdf 
+
+showquiz:
+	okular $(QUIZ).pdf 
+
+#
+# Utilities
+#
+deleteaddline:
+	sed -i 's/tcolorbox/fancybox/' $(QUIZ).tex
+	sed -i 's/tcolorbox/fancybox/' $(LEC).tex
+	sed -i 's/ % incompatible with moodle//' $(QUIZ).tex
+	sed -i 's/fancybox.tex} %/fancybox.tex}/' $(LEC).tex
+	#sed -i '/header_class/a \\\input{../../tex/hss_lualatex.tex}' $(QUIZ).tex
+
+sed:
+	sed -i '1i \\\newcommand\{\\Release\}\{\}\% Set Release or other word' $(QUIZ).tex
+
+
+# Make sure one quiz and one lecture are in dir, or non dir error will occur!
+renamelec:
+	mv *.tex lecture.tex
+
+

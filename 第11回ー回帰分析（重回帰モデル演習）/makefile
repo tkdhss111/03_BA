@@ -1,0 +1,1 @@
+../../tex/makefile_class

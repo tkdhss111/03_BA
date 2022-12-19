@@ -18,11 +18,283 @@
 
 \MyFrame{}{\tableofcontents}
 
-\section{section}
+\section{ロジスティック回帰モデル}
+
+\MyFrame{\insertsection}
+{
+  回帰モデルの目的変数$y$の値域は，$-\infty\le y \le \infty$であった。
+  では，確率$p$を目的変数とする回帰分析は可能であろうか？\\
+  確率の値域は，$0\le p \le 1$である。
+}
+
+\MyFrame{\insertsection}
+{
+  \ra~確率の定義域を実数域に引き伸ばして回帰分析して，
+  分析した結果は逆に縮めて確率に戻せばよい。\\
+  \MyFig{0.7}{logit_transform.pdf}
+  どうすれば定義域を引き伸ばしたり縮めたりできるのか？\\[3mm]
+  \begin{center}
+    \ra~ロジット変換
+  \end{center}
+}
+
+\MyFrame{ロジット変換}
+{
+  ロジット関数：0から1までの値を実数全域に引き伸ばす関数
+  \[\mathrm{logit}: \{p\in \mathds{R}|0\le p\le 1\}\}
+  \rightarrow \{y\in \mathds{R}|-\infty \le y \le \infty\}\]
+  \MyFig{0.6}{./R/logit_transform_graph.pdf}
+}
+
+\MyFrame{ロジット変換}
+{
+  ロジット関数：0から1までの値を実数全域に引き伸ばす（写像する）関数
+  \[\mathrm{logit}: \{p\in \mathds{R}|0\le p\le 1\}\}
+  \rightarrow \{y\in \mathds{R}|-\infty \le y \le \infty\}\]
+  \MyFig{0.6}{./R/logit_transform_console.png}
+}
 
 \MyFrame{}
 {
-  test
+  成功／失敗などの２値変数をそれぞれ$p=1$と$p=0$に割り当てることで，
+  ロジット変換を回帰分析に応用することができる。\\
+  ロジット変換なしに単純に２値変数に回帰モデルを適用すると
+  次図右上部分のように1を超える予測値が発生し失敗する。
+  \MyFig{0.6}{./R/apply_reg_to_binary.pdf}
+}
+
+\MyFrame{}
+{
+  確率をロジット変換すると
+  $p=1$は$\infty$に，$p=0$は$-\infty$に写像される。
+  そこで回帰モデルをデータ適合（fitting）する。
+  \MyFig{0.7}{./R/apply_reg_to_logit.pdf}
+}
+
+\MyFrame{}
+{
+  回帰モデルのデータ適合が終わった後，
+  実数全域を0から1までに縮める（元に戻す）にはどうすればよいか？\\
+  \ra~ロジット関数の逆変換（ロジスティック変換）を行えば良い。\\
+  $y=\ln \left(\frac{p}{1-p}\right)$\\
+  両辺の指数をとると，\\
+  $e^y=\frac{p}{1-p}$\\
+  $\Ra~(1-p)e^y=p$\\
+  $\Ra~e^y=(1+e^y)p$\\
+  $\Ra~p=\frac{e^y}{1+e^y}=\frac{1}{1+e^{-y}}$
+  （ロジスティック関数；logistic function）\\
+  （シグモイド関数 sigmoid functionでゲイン1の場合と同じ）
+
+}
+
+\MyFrame{}
+{
+  データ適合した回帰モデルをロジット逆変換（ロジスティック変換）すると
+  0から1までの範囲での回帰モデルとなり，
+  \MyFill{ロジスティック回帰モデル}と呼ばれる。
+  \MyFig{0.7}{./R/inverse_logit.pdf}
+}
+
+\section{ロジスティック回帰モデル}
+
+\MyFrame{\insertsection}
+{
+  \MyDefinition{ロジスティック回帰モデル}
+  {
+    2値変数を扱うためロジット変換やロジスティック変換を使用する回帰モデルを
+    \MyFill{ロジスティック回帰モデル}という。
+    %$P(Y_i=1)=p_i
+    %=\frac{1}{1+e^{-(\beta_0 + \beta_1 x_{1i}+\cdots+\beta_k x_{ki})}},
+    %\quad Y_i \in \{0, 1\}$
+    \[\ln\left(\frac{p_i}{1-p_i}\right)
+      =\beta_0 + \beta_1 x_{1i}+\cdots+\beta_k x_{ki}\]
+  }
+}
+
+\MyFrame{\insertsection}
+{
+  \MyExample{\insertsection の使用例}
+  {
+    不正検知，不良品検知，病気の判定 
+  }
+}
+
+\MyFrame{\insertsection　R}
+{
+  \tiny
+  \input{./R/univ_exam_data.tex}
+}
+
+\MyFrame{\insertsection　R}
+{
+}
+
+%\MyFrame{シグモイド関数}
+%{
+%  \MyDefinition{シグモイド関数}
+%  {
+%    シグモイド関数(sigmoid function)は
+%    $-\infty < x < \infty$を$0\le y\le 1$に写像する関数
+%    \[f(x)=\frac{1}{1+e^{ax}}\]
+%    ここで，$a$はゲイン(gain)と呼ばれる定数である。
+%    $a=1$のときは標準シグモイド関数
+%    $f(x)=\frac{1}{1+e^{x}}$と呼ぶ（下図）。
+%    \MyFig{0.4}{standard_sigmoid_function.png}
+%  }
+%  シグモイド関数はロジスティック回帰モデルや
+%  ニューラルネットワークの活性化関数などで使用される。
+%  ある一定の範囲内に数値を制限したときなどによく使用される。
+%}
+
+\section{分類}
+
+\MyFrame{回帰と分類の違い}
+{
+  回帰は連続変数を数値を予測する，分類は振り分けを行う。 
+  \MyDefinition{分類}
+  {
+    統計学において，データを複数のグループ（クラス）に分けることを
+    （統計的）\MyFill{分類}(classification)という。
+    2つのクラスに分けることを\MyFill{二値分類}，
+    多数のクラスに分けることを\MyFill{多クラス分類}という。
+  }
+  %
+  $Y=f(X)$というモデルを適用する際に，
+  $Y$が質的変数であれば分類，量的変数であれば回帰である。\\
+  \MyRef{【Wikipedea】分類}{https://ja.wikipedia.org/wiki/分類_(統計学)}
+  %
+  \MyExample{分類}
+  {
+    画像\ra 犬／猫
+  }
+}
+
+\MyFrame{}
+{
+  \begin{table}
+    \begin{tabular}{rrr}
+      \toprule
+                           &     回帰 & 分類 \\
+      \hline
+      目的変数の変数の種類 & 量的変数 & 質的変数\\
+      例                   & 売上金額（円）& 合格／不合格\\
+      \bottomrule
+    \end{tabular}
+  \end{table}
+  %
+
+  \MyExample{分類器}
+  {
+    ロジスティック回帰，決定木，サポートベクタマシン，ｋ近傍法
+  }
+  %
+  \MyFig{0.9}{regression_vs_logistic.png}
+  \MyRef{ロジスティック回帰分析とは？}
+  {https://gmo-research.jp/research-column/logistic-regression-analysis}
+}
+
+\MyFrame{\insertsection}
+{
+  分類はクラスの数により２値分類，多クラス分類がある。
+
+  \MyFig{0.9}{regression_vs_classification.jpg}
+  \MyRef{【トタデータブログ】回帰と分類の違いとは？}
+  {https://totadata.com/lec05-regression-classification}
+}
+
+\MyFrame{オッズ}
+{
+  \MyDefinition{オッズ}
+  {
+    $\frac{p_i}{1-p_i}$は
+    $\frac{成功確率}{失敗確率}$を表し\MyFill{オッズ}(odds)と呼ばれる。
+  }
+%  ロジスティック回帰モデルは対数オッズ（ロジット）を
+%  目的変数とする回帰モデルとも言える。
+%  $\mathrm{logit}(p)=\ln\left(\frac{p_i}{1-p_i}\right)
+%  =\beta_0 + \beta_1 x_{1i}+\cdots+\beta_k x_{ki}$\\
+
+  日本の公営競技においては，
+  賭けた金が何倍になって払い戻されるかのことをオッズと呼ぶ。
+  （確率論の定義と異なるので注意）
+  \MyFig{0.4}{odds_horse_race.png}
+  \MyRef{netkeiba}
+  {https://race.sp.netkeiba.com/?pid=race_top&kaisai_date=20200329}
+}
+
+\MyFrame{オッズ比}
+{
+  ロジスティック回帰分析では，
+  偏回帰係数の推定値の指数をとったもの$exp(\beta)$は
+  \MyFill{オッズ比}(odds ratio; OR)となる。
+  この値が1より値が大きいとその説明変数の値が大きくなればなるほど
+  オッズ（成功確率／失敗確率）が上がるという解釈になる。
+  逆に１より小さいと説明変数の増加につれてオッズが下がることになる。
+  ロジスティック回帰分析では，
+  オッズ比は成功に貢献する説明変数の序列を付けるときに使用される。
+}
+
+\MyFrame{判別スコア}
+{
+  ロジスティック回帰モデルに説明変数を当てはめて計算された値$p_i$を
+  \MyFill{判別スコア}という。
+  この値が0.5より大きいか否かで，0か1に割り振りクラスを決定する。
+}
+
+\MyFrame{\insertsection}
+{
+}
+
+\MyFrame{\insertsection}
+{
+}
+
+\MyFrame{\insertsection}
+{
+}
+
+\MyFrame{\insertsection}
+{
+}
+
+\MyFrame{\insertsection}
+{
+}
+
+\MyFrame{\insertsection}
+{
+}
+
+\MyFrame{\insertsection}
+{
+}
+
+\MyFrame{\insertsection}
+{
+}
+
+\MyFrame{\insertsection}
+{
+}
+
+\MyFrame{\insertsection}
+{
+}
+
+\MyFrame{\insertsection}
+{
+}
+
+\MyFrame{\insertsection}
+{
+}
+
+\MyFrame{\insertsection}
+{
+}
+
+\MyFrame{\insertsection}
+{
 }
 
 \end{document}

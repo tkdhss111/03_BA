@@ -62,12 +62,12 @@ grid()
 
 $$
 \begin{align}
-Y_i=&\beta x_i + \epsilon_i，
-\epsilon_i \sim \mathbb{N}(0, \sigma^2)\\
+Y_i=&\beta x_i + E_i，
+E_i \sim \mathbb{N}(0, \sigma^2)\\
 &ここで，\\
 &Y_i： 目的変数（確率変数）\\
 &x_i： 説明変数（定数）※（参考）相関分析では確率変数\\
-&\epsilon_i：誤差項（確率変数）\\
+&E_i：誤差項（確率変数）\\
 &\beta： 傾きを表す真の回帰係数（定数）\\
 &\sigma：誤差の標準偏差（定数）
 \end{align}
@@ -125,12 +125,12 @@ grid()
 
 $$
 \begin{align}
-Y_i=&\beta_0 + \beta_1 x_i + \epsilon_i，
-\epsilon_i \sim \mathbb{N}(0, \sigma^2)\\
+Y_i=&\beta_0 + \beta_1 x_i + E_i，
+E_i \sim \mathbb{N}(0, \sigma^2)\\
 &ここで，\\
 &Y_i： 目的変数（確率変数）\\
 &x_i： 説明変数（定数）\\
-&\epsilon_i：誤差項（確率変数）\\
+&E_i：誤差項（確率変数）\\
 &\beta_0： 切片を表す真の回帰係数（定数）\\
 &\beta_1： 傾きを表す真の回帰係数（定数）\\
 &\sigma：誤差の標準偏差（定数）
@@ -205,9 +205,9 @@ tab_model(fit1, fit2, dv.labels = c("Model1", "Model2"))
 in linear model](https://stats.stackexchange.com/questions/26176/removal-of-statistically-significant-intercept-term-increases-r2-in-linear-mo)
 
 
-単回帰のときは，決定係数のような平均値からの変動を評価する指標ではなくて残差標準誤差RSE（residual standard error）や平均二乗誤差平方RMSE(root-mean-square error)など残差から評価する指標を代わりに使おう．
+単回帰のときは，決定係数のような平均値からの変動を評価する指標ではなくて残差標準誤差RSE（residual standard error）や平均二乗誤差平方RMSE(root-mean-square error)など残差から評価する指標を代わりに使う．
 ```{r message=FALSE}
-# RMSEは技術系で認知されている散布度の指標（データサイズｎで割る）
+# RMSEは散布度の指標（標本サイズｎで割る）
 (RMSE1 <- sqrt(mean((y - fit1$fitted)^2)))
 (RMSE2 <- sqrt(mean((y - fit2$fitted)^2)))
 

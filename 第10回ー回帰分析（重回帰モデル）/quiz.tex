@@ -15,52 +15,70 @@
 
 \begin{quiz}{\MyClass}
 
+\QuizMultipleChoices
+{
+  回帰モデル全体の有意性を検定するときの検定統計量は何か？
+}
+{
+  F検定統計量
+}
+{20}
+{ z検定統計量}
+{ t検定統計量}
+{*F検定統計量}
+{ $\chi^2$検定統計量}
+
+\QuizMultipleChoices
+{
+  偏回帰係数（説明変数）の有意性を検定するときの検定統計量は何か？
+}
+{
+  t検定統計量
+}
+{20}
+{ z検定統計量}
+{*t検定統計量}
+{ F検定統計量}
+{ $\chi^2$検定統計量}
+
 \QuizShortAnswer
 {
-  $(-2x^3y)^3\times(-2x^3y)$を計算せよ。\\
-  　\\%whole space
-  解答例：答えが$3x^6y^2$のとき，3,6,2と半角数字で解答欄に記入する。
+  カテゴリ変数やバイナリ変数（True/False）などの数値変数でない
+  変数に対して0と1を用いて数値化した変数を\underline{　　　　　}という。
+  空欄を埋めよ。
 }
 {
-  $=(-2)^3(x^3)^3y^3\times(-2)x^3y$\\
-  $=-8x^9y^3\times(-2)x^3y$\\
-  $=\{(-8)\times(-2)\}x^{9+3}y^{3+1}$
-  $=16x^{12}y^4$
+  ダミー変数
 }
-{30}
-{16*12*4}
+{20}
+{ダミー変数}
 {}
 {}
 {}
 
-\QuizMultipleChoices
+\QuizTrueFalse
 {
-  $ax^2+bx+c$を平方完成せよ。
+  次の回帰モデルは有意水準５％で有意なモデルか？
+  \includegraphics[width=\textwidth]{anl1.png}
 }
 {
-  $=a(x^2+\frac{b}{a}x)+c$\\
-  $=a\{x^2+\frac{b}{a}x+(\frac{b}{2a})^2-(\frac{b}{2a})^2\}+c$\\
-  $=a(x+\frac{b}{2a})^2-\frac{b^2-4ac}{4a}$
+  有効でない
 }
-{40}
-{ $a(x+\frac{b}{2a})^2+\frac{b^2-4ac}{2a}$}
-{ $a(x+\frac{b}{2a})^2-\frac{b^2-4ac}{2a}$}
-{ $a(x+\frac{b}{2a})^2+\frac{b^2-4ac}{4a}$}
-{*$a(x+\frac{b}{2a})^2-\frac{b^2-4ac}{4a}$}
+{20}
+{ 有意である}
+{*有意でない}
 
-\QuizMultipleChoices
+\QuizTrueFalse
 {
-  $ax^2+bx+c=0$を解け。
+  説明変数$x2$の偏回帰係数は有意水準５％で有意か？
+  \includegraphics[width=\textwidth]{anl2.png}
 }
 {
-  二次方程式の解の公式より，\\
-  \[x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}\]
+  有効でない
 }
-{30}
-{*$x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}$}
-{ $x=\frac{-b\pm\sqrt{b^2+4ac}}{2a}$}
-{ $x=\frac{-b\pm\sqrt{b^2-4ac}}{a}$}
-{ $x=\frac{-b\pm\sqrt{b^2+4ac}}{a}$}
+{20}
+{ 有意である}
+{*有意でない}
 
 \end{quiz}
 
